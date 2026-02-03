@@ -102,7 +102,7 @@ const Navbar = () => {
 
             {/* User Account */}
             <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/profile")}
 
               className="hidden sm:block text-xl md:text-2xl hover:text-pink-600 transition-colors"
               aria-label="User account"

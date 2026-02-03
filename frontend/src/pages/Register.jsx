@@ -18,7 +18,7 @@ const Register = () => {
             axios.post("http://localhost:3000/auth/register",user).then((resonse) => {
                 console.log(resonse)
                 localStorage.setItem("user", JSON.stringify(resonse.data.user))
-                navigate("/dashboard")
+                navigate("/profile")
             }).catch((err) => {
                 console.error("Registration error:", err)
             });

@@ -12,7 +12,7 @@ const Login = () => {
         try {
             const response = await axios.post("http://localhost:3000/auth/login", { username, password })
             localStorage.setItem("user", JSON.stringify(response.data.user))
-            navigate("/dashboard")
+            navigate("/profile")
         } catch (error) {
             console.error("Login error:", error)
         }
