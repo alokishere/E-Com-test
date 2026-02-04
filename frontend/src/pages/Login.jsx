@@ -10,9 +10,14 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post("http://localhost:3000/auth/login", { username, password })
-            localStorage.setItem("user", JSON.stringify(response.data.user))
-            navigate("/profile")
+            const response = await axios.get("http://localhost:3000/users")
+            const user = response.data.find((user) => user.username === username && user.password === password)
+            if (user) {
+                localStorage.setItem("user", JSON.stringify(user))
+                navigate("/")
+            } else {
+                console.error("Login error:", error)
+            }
         } catch (error) {
             console.error("Login error:", error)
         }

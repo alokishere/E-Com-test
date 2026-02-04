@@ -1,24 +1,46 @@
 import React from "react";
-
-const ProductCard = () => {
-  const db = {
-    title: "Mens Casual Premium Slim Fit T-Shirts ",
-    price: 22.3,
-    description:
-      "Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.",
-    category: "men's clothing",
-    image:
-      "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_t.png",
-  };
-
-  const { title, price, description, category, image } = db;
+import ProductDetails from "./ProductDetails";
+import { useNavigate } from "react-router-dom";
+const ProductCard = ({data}) => {
+    const navigate = useNavigate()
   return (
-    <div className="border border-gray-200 rounded-lg p-4">
-      <img src={image} alt={title} />
-      <h2>{title}</h2>
-      <p>{price}</p>
-      <p>{description}</p>
-      <p>{category}</p>
+    <div key={Date.now()} className="group flex flex-col h-full bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+      <div className="relative aspect-square overflow-hidden bg-gray-50">
+        <img
+          src={data.image}
+          alt={data.title}
+          className="w-full h-full object-contain p-8 transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute top-4 left-4">
+          <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 rounded-full">
+            {data.category}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-col flex-grow p-6">
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="text-lg font-bold text-gray-900 line-clamp-1">
+            {data.title}
+          </h3>
+        </div>
+        
+        <p className="text-sm text-gray-500 line-clamp-2 mb-6 flex-grow">
+          {data.description}
+        </p>
+        
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex flex-col">
+            <span className="text-xs text-gray-400 font-medium">Price</span>
+            <span className="text-2xl font-black text-gray-900">
+              ${data.price}
+            </span>
+          </div>
+          <button onClick={() => navigate(`/products/${data.id}`)} className="flex items-center justify-center px-5 py-2.5 text-sm font-bold text-white bg-gray-900 rounded-xl transition-all hover:bg-indigo-600 active:scale-95 focus:ring-4 focus:ring-indigo-100">
+            Details
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

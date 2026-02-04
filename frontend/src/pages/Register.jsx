@@ -10,15 +10,17 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const user = {
+            id: Date.now(),
             username,
             mobile, 
-            password
+            password,
+            isAdmin: false
         }
         try {
-            axios.post("http://localhost:3000/auth/register",user).then((resonse) => {
-                console.log(resonse)
-                localStorage.setItem("user", JSON.stringify(resonse.data.user))
-                navigate("/profile")
+            axios.post("http://localhost:3000/users",user).then((response) => {
+                console.log(response)
+                localStorage.setItem("user", JSON.stringify(response.data))
+                navigate("/login")
             }).catch((err) => {
                 console.error("Registration error:", err)
             });

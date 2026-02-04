@@ -7,16 +7,16 @@ const OfferCard = () => {
   const offers = [
     {
       image:
-        "https://dr.rashel.in/cdn/shop/files/Clearance_Sale_Banner-1920x512.jpg?v=1769579823&width=2000",
+        "https://mantraherbal.in/cdn/shop/files/mantra_herbal_gst_reform_homepage_banner_3.jpg?v=1758510895&width=1800",
     },
     {
       image:
-        "https://dr.rashel.in/cdn/shop/files/Clearance_Sale_Banner-1920x512.jpg?v=1769579823&width=2000",
+        "https://mantraherbal.in/cdn/shop/files/Home_page_desktop.jpg?v=1758186890&width=1800",
     },
-    {image:"https://images.unsplash.com/photo-1739980296455-3f8d6051ca20?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-    {image:"https://images.unsplash.com/photo-1617422275558-e5f616302690?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-    {image:"https://images.unsplash.com/photo-1723150512429-bfa92988d845?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-    {image:"https://images.unsplash.com/photo-1617422275558-e5f616302690?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+    {image:"https://mantraherbal.in/cdn/shop/files/mantra_herbal_gst_reform_homepage_banner_3.jpg?v=1758510895&width=1800"},
+    {image:"https://mantraherbal.in/cdn/shop/files/kumkumadi_banner__jpg.jpg?v=1770020540&width=3000"},
+    {image:"https://mantraherbal.in/cdn/shop/files/kumkumadi_banner__jpg.jpg?v=1770020540&width=3000"},
+    {image:"https://mantraherbal.in/cdn/shop/files/proven_results_banner.jpg?v=1759579819&width=3000"}
   ];
 
   return (
@@ -33,11 +33,11 @@ const OfferCard = () => {
         onReachBeginning={(swiper) => {
           swiper.params.autoplay.reverseDirection = false;
         }}
-        className="w-full h-96"
+        className="w-full h-[60vh]"
       >
         {offers.map((offer, index) => (
           <SwiperSlide key={index}>
-            <div className="w-full h-96">
+            <div className="w-full h-full">
               <img src={offer.image} alt="" className="w-full h-full object-cover" />
             </div>
           </SwiperSlide>

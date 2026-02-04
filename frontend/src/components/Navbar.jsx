@@ -1,181 +1,214 @@
 import React, { useState } from "react";
-import { CiUser } from "react-icons/ci";
-import { FaOpencart } from "react-icons/fa";
-import { FaShopLock } from "react-icons/fa6";
-import { IoIosSearch, IoMdClose } from "react-icons/io";
+import { CiUser, CiSearch, CiShoppingBasket } from "react-icons/ci";
+import { IoMdClose } from "react-icons/io";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { IoChevronDown } from "react-icons/io5";
+import {
+  IoChevronDown,
+  IoChevronBack,
+  IoChevronForward,
+} from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [cartCount] = useState(3); // Example cart count
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
-  
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  React.useEffect(() => {
+    if (user) {
+      axios
+        .get(`http://localhost:3000/cart?userId=${user.id}`)
+        .then((response) => {
+          setCartCount(response.data.length);
+        })
+        .catch((err) => {
+          console.error("Error fetching cart count:", err);
+        });
+    }
+  }, [user?.id]);
+
   const navItems = [
-    { name: "FACE", hasDropdown: true },
-    { name: "BODY & BATH", hasDropdown: true },
-    { name: "HAIR", hasDropdown: true },
+    { name: "SHOP ALL", hasDropdown: false, path: "/products" },
+    { name: "SKIN", hasDropdown: false },
+    { name: "BATH & BODY", hasDropdown: false },
+    { name: "HAIR", hasDropdown: false },
     { name: "MEN", hasDropdown: false },
-    { name: "COMBO", hasDropdown: true },
-    { name: "BEST SELLERS", hasDropdown: false },
-    { name: "NEW ARRIVALS", hasDropdown: false },
-    { name: "SHOP BY INGREDIENTS", hasDropdown: true },
-    { name: "SHOP BY CONCERN", hasDropdown: true },
-    { name: "K-DERMA", hasDropdown: false },
-    { name: "WOW WINTER SALE", hasDropdown: false, highlight: true },
-    { name: "SUPER SAVER COMBOS", hasDropdown: true },
-    { name: "SHOP BY RANGES", hasDropdown: true },
-    { name: "CLEARANCE SALE", hasDropdown: false, highlight: true },
-    { name: "BLOGS", hasDropdown: false },
+    { name: "SPA", hasDropdown: false },
+    { name: "ANANTAM", hasDropdown: false },
+    { name: "WEDDING EDITS", hasDropdown: false },
+    { name: "COMBOS", hasDropdown: false },
+    { name: "SHOP BY", hasDropdown: true },
+    { name: "OUR STORY", hasDropdown: false },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-md">
+    <nav className="sticky top-0 z-50 bg-[#FAF6EA] shadow-md font-sans">
       {/* Top Banner */}
-      <div className="bg-linear-to-r from-pink-600 via-rose-500 to-orange-500 text-white py-2 text-center text-xs md:text-sm font-medium">
-        ✨ WINTER SALE: Extra 20% OFF | Free Shipping above ₹300
+      <div className="bg-[#C5A987] text-white py-2 px-4 flex justify-center items-center relative text-[10px] md:text-xs font-thin tracking-widest">
+        <button className="absolute left-4 md:left-20 text-white/80 hover:text-white">
+          <IoChevronBack size={16} />
+        </button>
+        <span>
+          GET 10% OFF YOUR FIRST ORDER – USE CODE{" "}
+          <span className="font-bold">LEBROSTONE10!</span>
+        </span>
+        <button className="absolute right-4 md:right-20 text-white/80 hover:text-white">
+          <IoChevronForward size={16} />
+        </button>
       </div>
 
-      {/* Main Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <div className="flex items-center gap-2 md:gap-3">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-2xl hover:text-pink-600 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <IoMdClose /> : <HiMenuAlt3 />}
-            </button>
-            
-            <div className="flex items-center gap-2 cursor-pointer group">
-              <FaShopLock className="text-2xl md:text-3xl text-pink-600 group-hover:text-pink-700 transition-colors" />
-              <span className="hidden sm:block text-xl md:text-2xl font-bold bg-linear-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
-                BeautyGlow
-              </span>
-            </div>
+      {/* Main Header Area (Logo & Icons) */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+        <div className="flex items-center justify-between">
+          {/* Left: House of Baidyanath (Placeholder/Text) */}
+          <div className="hidden md:flex flex-col text-[10px] items-start font-bold text-gray-800 leading-tight">
+            <span className="h-15 w-auto ">
+              <img className="h-full w-full " src="/logo.jpg" alt="" />
+            </span>
           </div>
 
-          {/* Desktop Navigation - Scrollable */}
-          <div className="hidden lg:flex items-center flex-1 mx-8 overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-6 xl:gap-8 whitespace-nowrap">
-              {navItems.slice(0, 8).map((item, index) => (
-                <div key={index} className="relative group">
-                  <button
-                    className={`
-                      flex items-center gap-1 text-xs font-semibold tracking-wide
-                      transition-all duration-200
-                      ${item.highlight 
-                        ? 'text-pink-600 hover:text-pink-700' 
-                        : 'text-gray-700 hover:text-pink-600'
-                      }
-                    `}
-                  >
-                    {item.name}
-                    {item.hasDropdown && (
-                      <IoChevronDown className="text-xs group-hover:rotate-180 transition-transform duration-200" />
-                    )}
-                  </button>
-                  
-                  {/* Dropdown indicator */}
-                  {item.hasDropdown && (
-                    <div className="absolute left-0 right-0 h-0.5 bg-pink-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
-                  )}
-                </div>
-              ))}
-            </div>
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-2xl text-gray-800"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <HiMenuAlt3 />
+          </button>
+
+          {/* Center: Brand Logo */}
+          <div className="flex-1 flex justify-center mb-4">
+            <h1 className="text-3xl   font-serif tracking-wide text-[#C5A987]">
+              LEBROSTONE
+            </h1>
           </div>
 
-          {/* Right Side Icons */}
-          <div className="flex items-center gap-3 md:gap-5">
-            {/* Search */}
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="text-xl md:text-2xl hover:text-pink-600 transition-colors relative"
-              aria-label="Search"
-            >
-              <IoIosSearch />
-            </button>
+          {/* Right: Icons & Badge */}
+          <div className="flex items-center gap-4 md:gap-6">
+            <div className="flex items-center gap-3 md:gap-4 text-gray-800">
+              <button
+                onClick={() => navigate("/profile")}
+                className="hover:text-[#C5A987] transition-colors"
+              >
+                <CiUser size={24} strokeWidth={0.5} />
+              </button>
+              <button
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="hover:text-[#C5A987] transition-colors"
+              >
+                <CiSearch size={24} strokeWidth={0.5} />
+              </button>
+              <button
+                onClick={() => navigate("/cart")}
+                className="relative hover:text-[#C5A987] transition-colors"
+              >
+                <CiShoppingBasket size={24} strokeWidth={0.5} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+            </div>
 
-            {/* User Account */}
-            <button
-            onClick={() => navigate("/profile")}
-
-              className="hidden sm:block text-xl md:text-2xl hover:text-pink-600 transition-colors"
-              aria-label="User account"
-            >
-              <CiUser />
-            </button>
-
-            {/* Cart with Badge */}
-            <button
-              className="relative text-xl md:text-2xl hover:text-pink-600 transition-colors"
-              aria-label="Shopping cart"
-            >
-              <FaOpencart />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-linear-to-r from-pink-600 to-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
-                  {cartCount}
-                </span>
-              )}
-            </button>
+            {/* Circular Badge (Desktop Only) */}
+            <div className="md:block w-12 h-12 border border-gray-800 rounded-full flex items-center justify-center p-1 opacity-80">
+              <div className="text-[6px] text-center leading-none font-bold text-gray-800 uppercase">
+                Research
+                <br />
+                Foundation
+                <br />
+                Since 1917
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Search Bar (Expanded) */}
-        {searchOpen && (
-          <div className="pb-4 animate-slideDown">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full px-4 py-3 pr-12 border-2 border-pink-200 rounded-lg focus:outline-none focus:border-pink-500 transition-colors"
-                autoFocus
-              />
-              <button className="absolute right-3 top-1/2 -translate-y-1/2 text-pink-600 text-xl">
-                <IoIosSearch />
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-gray-200 bg-white animate-slideDown">
-          <div className="max-h-96 overflow-y-auto py-4 px-4 space-y-2">
-            {navItems.map((item, index) => (
-              <button
-                key={index}
-                className={`
-                  w-full text-left px-4 py-3 rounded-lg font-medium text-sm
-                  transition-colors
-                  ${item.highlight
-                    ? 'bg-linear-to-r from-pink-50 to-orange-50 text-pink-600 hover:from-pink-100 hover:to-orange-100'
-                    : 'hover:bg-gray-50 text-gray-700 hover:text-pink-600'
-                  }
-                `}
-              >
-                <div className="flex items-center justify-between">
-                  <span>{item.name}</span>
-                  {item.hasDropdown && <IoChevronDown className="text-xs" />}
-                </div>
-              </button>
-            ))}
-            
-            {/* Mobile User Link */}
-            <button className="sm:hidden w-full text-left px-4 py-3 rounded-lg font-medium text-sm hover:bg-gray-50 text-gray-700 hover:text-pink-600 transition-colors flex items-center gap-2">
-              <CiUser className="text-xl" />
-              <span>My Account</span>
+      {/* Navigation Links (Desktop) */}
+      <div className="hidden md:block border-b border-gray-100/50 pb-4">
+        <div className="flex justify-center items-center gap-8 text-[11px] lg:text-xs font-medium tracking-widest text-gray-700">
+          {navItems.map((item, index) => (
+            <div
+              key={index}
+              className="group cursor-pointer relative"
+              onClick={() => item.path && navigate(item.path)}
+            >
+              <span className="hover:text-[#C5A987] transition-colors duration-300">
+                {item.name}
+              </span>
+              {/* Hover Underline */}
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#C5A987] transition-all duration-300 group-hover:w-full"></span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Search Overlay */}
+      {searchOpen && (
+        <div className="absolute top-full left-0 w-full bg-white shadow-lg p-4 animate-slideDown z-40 border-t border-gray-100">
+          <div className="max-w-4xl mx-auto relative">
+            <input
+              type="text"
+              placeholder="Search for products..."
+              className="w-full pl-4 pr-12 py-2 border-b border-gray-300 focus:outline-none focus:border-[#C5A987] text-sm"
+              autoFocus
+            />
+            <button className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-400">
+              <CiSearch size={20} />
             </button>
           </div>
         </div>
       )}
 
-      {/* Custom CSS for animations */}
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="absolute right-0 top-0 h-full w-[80%] max-w-sm bg-[#FAF6EA] shadow-xl p-6 overflow-y-auto transition-transform duration-300 transform translate-x-0"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-serif text-[#C5A987]">LEBROSTONE</h2>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-gray-600"
+              >
+                <IoMdClose size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {navItems.map((item, index) => (
+                <div key={index} className="border-b border-gray-200/50 pb-2">
+                  <div className="flex justify-between items-center text-sm font-medium text-gray-700">
+                    {item.name}
+                    {item.hasDropdown && <IoChevronDown size={14} />}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 space-y-4 pt-4 border-t border-gray-300">
+              <div className="flex items-center gap-3 text-sm font-medium text-gray-700">
+                <CiUser size={20} /> My Account
+              </div>
+              <div className="flex items-center gap-3 text-sm font-medium text-gray-700">
+                <span className="w-5 h-5 flex items-center justify-center font-serif italic text-xs">
+                  ?
+                </span>{" "}
+                Help & Support
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style jsx>{`
         @keyframes slideDown {
           from {
@@ -187,18 +220,8 @@ const Navbar = () => {
             transform: translateY(0);
           }
         }
-
         .animate-slideDown {
           animation: slideDown 0.3s ease-out;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
         }
       `}</style>
     </nav>
