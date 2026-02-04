@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/cards/ProductCard";
-import axios from "axios";
+
+import instance from "../api/AxiosConfig";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/products")
+    instance
+      .get("/products")
       .then((response) => {
         setProducts(response.data);
       })

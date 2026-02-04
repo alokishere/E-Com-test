@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import instance from "../../api/AxiosConfig";
 const ProductDetails = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/products/${id}`)
+    instance
+      .get(`/products/${id}`)
       .then((response) => {
         console.log(response.data);
         setData(response.data);
@@ -34,14 +34,14 @@ const ProductDetails = () => {
     }
 
     // Check if product already in cart for this user
-    axios
-      .get(`http://localhost:3000/cart?userId=${user.id}&productId=${data.id}`)
+    instance
+      .get(`/cart?userId=${user.id}&productId=${data.id}`)
       .then((response) => {
         if (response.data.length > 0) {
           // Product already in cart, update quantity
           const cartItem = response.data[0];
-          axios
-            .patch(`http://localhost:3000/cart/${cartItem.id}`, {
+          instance
+            .patch(`/cart/${cartItem.id}`, {
               quantity: cartItem.quantity + 1,
             })
             .then(() => {
@@ -49,8 +49,8 @@ const ProductDetails = () => {
             });
         } else {
           // Product not in cart, add new item
-          axios
-            .post("http://localhost:3000/cart", {
+          instance
+            .post("/cart", {
               productId: data.id,
               userId: user.id,
               title: data.title,
@@ -87,8 +87,8 @@ const ProductDetails = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios
-      .put(`http://localhost:3000/products/${id}`, formData)
+    instance
+      .put(`/products/${id}`, formData)
       .then((response) => {
         setData(response.data);
         setIsEditing(false);

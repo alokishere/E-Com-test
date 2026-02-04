@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/section/Footer";
+import instance from "../api/AxiosConfig";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -19,8 +20,8 @@ const Cart = () => {
   }, [user?.id]);
 
   const fetchCart = () => {
-    axios
-      .get(`http://localhost:3000/cart?userId=${user.id}`)
+    instance
+      .get(`/cart?userId=${user.id}`)
       .then((response) => {
         setCartItems(response.data);
         setLoading(false);
@@ -33,13 +34,13 @@ const Cart = () => {
 
   const updateQuantity = (id, newQty) => {
     if (newQty < 1) return;
-    axios
-      .patch(`http://localhost:3000/cart/${id}`, { quantity: newQty })
+    instance
+      .patch(`/cart/${id}`, { quantity: newQty })
       .then(() => fetchCart());
   };
 
   const removeItem = (id) => {
-    axios.delete(`http://localhost:3000/cart/${id}`).then(() => fetchCart());
+    instance.delete(`/cart/${id}`).then(() => fetchCart());
   };
 
   const totalPrice = cartItems.reduce(

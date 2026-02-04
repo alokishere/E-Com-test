@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import instance from '../../api/AxiosConfig';   
 import { useNavigate } from 'react-router-dom';
 
 const CreateProduct = () => {
@@ -16,8 +16,8 @@ const CreateProduct = () => {
     const navigate = useNavigate();
     const handleUpdate = (e) => {
         e.preventDefault();
-        axios
-          .post(`http://localhost:3000/products`, formData)
+        instance
+          .post(`/products`, formData)
           .then((response) => {
             alert("Product updated successfully!");
           })

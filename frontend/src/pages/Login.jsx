@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import instance from '../api/AxiosConfig'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -10,7 +10,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.get("http://localhost:3000/users")
+            const response = await instance.get("/users")
             const user = response.data.find((user) => user.username === username && user.password === password)
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user))

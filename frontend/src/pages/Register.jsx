@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+
+import instance from '../api/AxiosConfig'
 const Register = () => {
     const [username, setUsername] = useState("")
     const [mobile, setMobile] = useState("")
@@ -17,7 +18,7 @@ const Register = () => {
             isAdmin: false
         }
         try {
-            axios.post("http://localhost:3000/users",user).then((response) => {
+            instance.post("/users",user).then((response) => {
                 console.log(response)
                 localStorage.setItem("user", JSON.stringify(response.data))
                 navigate("/login")

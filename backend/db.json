@@ -39,6 +39,22 @@
       "price": "123",
       "category": "faison",
       "image": "https://plumgoodness.com/cdn/shop/files/01_b_6c104f5a-a139-4d0a-a5a1-8252b335b829.jpg?v=1763362047&width=800"
+    },
+    {
+      "id": "8fdf",
+      "title": "beatu",
+      "description": "the beatu product",
+      "price": "1234",
+      "category": "faison",
+      "image": "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces"
+    },
+    {
+      "id": "a01a",
+      "title": "dpoj",
+      "description": "wdef",
+      "price": "2324",
+      "category": "bag",
+      "image": "https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&fit=crop&ar=16%3A9&crop=faces"
     }
   ],
   "users": [
@@ -57,45 +73,33 @@
       "isAdmin": false
     },
     {
-      "id": 1770191442448,
+      "id": "1770191442448",
       "username": "alok1",
       "mobile": "12321233",
       "password": "123",
       "isAdmin": false
     },
     {
-      "id": 1770191865223,
+      "id": "1770191865223",
       "username": "akkk",
       "mobile": "217987498237",
       "password": "123",
       "isAdmin": false
     },
     {
-      "id": 1770191934253,
+      "id": "1770191934253",
       "username": "alokkk",
       "mobile": "97923753245",
       "password": "123",
       "isAdmin": false
-    }
-  ],
-  "cart": [
-    {
-      "id": "6e3f",
-      "productId": "1770191442449",
-      "userId": "1",
-      "title": "Mens Cotton Jacket",
-      "price": 55.99,
-      "image": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_t.png",
-      "quantity": 1
     },
     {
-      "id": "325d",
-      "productId": "14ca",
-      "userId": "1",
-      "title": "this is a bearty prodyct",
-      "price": "123",
-      "image": "https://plumgoodness.com/cdn/shop/files/01_b_6c104f5a-a139-4d0a-a5a1-8252b335b829.jpg?v=1763362047&width=800",
-      "quantity": 1
+      "id": "1770198160907",
+      "username": "alll",
+      "mobile": "93819463",
+      "password": "123",
+      "isAdmin": false
     }
-  ]
+  ],
+  "cart": []
 }
