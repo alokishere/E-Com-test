@@ -11,7 +11,6 @@ const Products = () => {
       .get("/api/product/getallproducts")
       .then((response) => {
         setProducts(response.data.products);
-        toast.success("Products fetched successfully!");
       })
       .catch((err) => {
         console.error("Error fetching products:", err);

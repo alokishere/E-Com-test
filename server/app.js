@@ -4,6 +4,7 @@ const app = express();
 const connectDB = require("./src/db/db");
 const authRoutes = require("./src/routes/auth.routes");
 const productRoutes = require("./src/routes/product.routes");
+const cartRoutes = require("./src/routes/cart.routes");
 const cors = require("cors");
 //port 
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,10 @@ connectDB();
 //routes
 app.use("/api/auth", authRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
+
+
+
 app.get('/', (req, res)=>{
     res.send("Hello World");
 })
