@@ -4,12 +4,13 @@ const app = express();
 const connectDB = require("./src/db/db");
 const authRoutes = require("./src/routes/auth.routes");
 const productRoutes = require("./src/routes/product.routes");
-
+const cors = require("cors");
 //port 
 const PORT = process.env.PORT || 3000;
 
 //middleware
 app.use(express.json());
+app.use(cors());
 
 //db connection
 connectDB();

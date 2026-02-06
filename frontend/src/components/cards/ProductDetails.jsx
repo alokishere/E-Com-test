@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../api/AxiosConfig";
+import { toast } from "react-toastify";
 const ProductDetails = () => {
-  const { id } = useParams();
+  const { _id } = useParams();
   const [data, setData] = useState(null);
   useEffect(() => {
     instance
-      .get(`/products/${id}`)
+      .get(`/api/product/getproductbyid/${_id}`)
       .then((response) => {
         console.log(response.data);
-        setData(response.data);
+        setData(response.data.product);
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
+        toast.error("Error fetching products");
       });
-  }, [id]);
+  }, [_id]);
   const user = JSON.parse(localStorage.getItem("user"));
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -28,50 +30,52 @@ const ProductDetails = () => {
 
   const addToCartHanderler = () => {
     if (!user) {
-      alert("Please login to add products to cart");
+      toast.error("Please login to add products to cart");
       navigate("/login");
       return;
     }
 
     // Check if product already in cart for this user
-    instance
-      .get(`/cart?userId=${user.id}&productId=${data.id}`)
-      .then((response) => {
-        if (response.data.length > 0) {
-          // Product already in cart, update quantity
-          const cartItem = response.data[0];
-          instance
-            .patch(`/cart/${cartItem.id}`, {
-              quantity: cartItem.quantity + 1,
-            })
-            .then(() => {
-              alert("Product quantity updated in cart!");
-            });
-        } else {
-          // Product not in cart, add new item
-          instance
-            .post("/cart", {
-              productId: data.id,
-              userId: user.id,
-              title: data.title,
-              price: data.price,
-              image: data.image,
-              quantity: 1,
-            })
-            .then(() => {
-              alert("Product added to cart successfully!");
-            });
-        }
-      })
-      .catch((err) => {
-        console.error("Error adding product to cart:", err);
-      });
+    // instance
+    //   .get(`/api/cart?userId=${user.id}&productId=${data._id}`)
+    //   .then((response) => {
+    //     if (response.data.length > 0) {
+    //       // Product already in cart, update quantity
+    // toast.success("Product already in cart");
+    //       const cartItem = response.data[0];
+    //       instance
+    //         .patch(`/api/cart/${cartItem.id}`, {
+    //           quantity: cartItem.quantity + 1,
+    //         })
+    //         .then(() => {
+    //           toast.success("Product quantity updated in cart!");
+    //         });
+    //     } else {
+    //       // Product not in cart, add new item
+    //       instance
+    //         .post("/api/cart", {
+    //           productId: data._id,
+    //           userId: user.id,
+    //           title: data.title,
+    //           price: data.price,
+    //           image: data.image,
+    //           quantity: 1,
+    //         })
+    //         .then(() => {
+    //           toast.success("Product added to cart successfully!");
+    //         });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error adding product to cart:", err);
+    //     toast.error("Error adding product to cart");
+    //   });
   };
 
   useEffect(() => {
     if (data) {
       setFormData({
-        id: data.id,
+        id: data._id,
         title: data.title,
         price: data.price,
         description: data.description,
@@ -85,18 +89,25 @@ const ProductDetails = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    instance
-      .put(`/products/${id}`, formData)
-      .then((response) => {
-        setData(response.data);
-        setIsEditing(false);
-        alert("Product updated successfully!");
-      })
-      .catch((err) => {
-        console.error("Error updating product:", err);
-      });
+
+    try {
+      const res = await instance.put(
+        `/api/product/updateproduct/${_id}`,
+        formData,
+      );
+
+      const updatedProduct = res.data.product;
+
+      setData(updatedProduct);
+
+      setIsEditing(false);
+      toast.success("Product updated successfully!");
+    } catch (err) {
+      console.error("Error updating product:", err);
+      toast.error("Error updating product");
+    }
   };
 
   if (!data) return <div className="p-10 text-center">Loading...</div>;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/cards/ProductCard";
-
+import { toast } from "react-toastify";
 import instance from "../api/AxiosConfig";
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -8,12 +8,14 @@ const Products = () => {
 
   useEffect(() => {
     instance
-      .get("/products")
+      .get("/api/product/getallproducts")
       .then((response) => {
-        setProducts(response.data);
+        setProducts(response.data.products);
+        toast.success("Products fetched successfully!");
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
+        toast.error("Error fetching products");
       });
   }, []);
 
@@ -29,7 +31,7 @@ const Products = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {products.map((item) => (
-          <ProductCard key={item.id} data={item} />
+          <ProductCard key={item._id} data={item} />
         ))}
       </div>
     </div>

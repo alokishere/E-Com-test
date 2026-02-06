@@ -4,16 +4,22 @@ const bcrypt = require("bcrypt");
 //register user
 const registerUser = async (req, res) => {
     try {
-        const { fullName, mobile, password, role } = req.body;
+        const { fullName, mobile, password } = req.body;
         const isUserExist = await User.findOne({ mobile });
         if(isUserExist){
             return res.status(400).json({ error: "User already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ fullName, mobile, password:hashedPassword, role });
+        const user = await User.create({ fullName, mobile, password:hashedPassword });
         res.status(201).json({ 
             message: "User registered successfully",
-            user
+            fullName: user.fullName,
+            mobile: user.mobile,
+            id: user._id,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+            isAdmin: user.isAdmin
+            
          });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -38,10 +44,10 @@ const loginUser = async (req, res) => {
             message: "User logged in successfully",
             fullName: user.fullName,
             mobile: user.mobile,
-            role: user.role,
             id: user._id,
             createdAt: user.createdAt,
-            updatedAt: user.updatedAt
+            updatedAt: user.updatedAt,
+            isAdmin: user.isAdmin
             
          });
     } catch (error) {
