@@ -21,9 +21,9 @@ const Cart = () => {
 
   const fetchCart = () => {
     instance
-      .get(`/cart?userId=${user.id}`)
+      .post(`/api/cart/get`,{userId:user.id})
       .then((response) => {
-        setCartItems(response.data);
+       setCartItems(response.data.cart.items);
         setLoading(false);
       })
       .catch((err) => {

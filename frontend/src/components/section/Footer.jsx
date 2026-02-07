@@ -10,7 +10,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#FAF6EA] pt-16 pb-8 font-sans">
+    <footer className="bg-[#FFFF] pt-16 pb-8 font-sans">
       {/* Newsletter Section */}
       <div className="max-w-7xl mx-auto px-4 text-center mb-16">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">
@@ -272,7 +272,7 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className="max-w-7xl mx-auto px-4 border-t border-gray-200/50 pt-8 flex flex-col items-center">
-        <div className="flex flex-wrap justify-center gap-4 mb-4 grayscale opacity-70">
+        <div className="flex flex-wrap justify-center gap-4 mb-4 ">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
             alt="PayPal"
@@ -289,12 +289,12 @@ const Footer = () => {
             className="h-6"
           />
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Google_Pay_Logo.svg"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/3840px-Google_Pay_Logo.svg.png"
             alt="GPay"
             className="h-6"
           />
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo.png"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1280px-UPI-Logo-vector.svg.png"
             alt="UPI"
             className="h-6"
           />

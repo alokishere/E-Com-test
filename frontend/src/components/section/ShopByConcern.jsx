@@ -7,7 +7,8 @@ import "swiper/css/pagination";
 const concerns = [
   {
     title: "Acne",
-    image: "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Acne.jpg?v=1759745165&width=400",
+    image:
+      "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Acne.jpg?v=1759745165&width=400",
   },
   {
     title: "Black Heads",
@@ -16,15 +17,18 @@ const concerns = [
   },
   {
     title: "Tanning",
-    image: "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Tann_Skin.jpg?v=1759746391&width=400",
+    image:
+      "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Tann_Skin.jpg?v=1759746391&width=400",
   },
   {
     title: "Dry Skin",
-    image: "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Dry_Skin.jpg?v=1759746209&width=400",
+    image:
+      "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Dry_Skin.jpg?v=1759746209&width=400",
   },
   {
     title: "Wrinkles",
-    image: "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Wrinkles.jpg?v=1759745336&width=400",
+    image:
+      "https://dr.rashel.in/cdn/shop/collections/Dr.Rashel_Wrinkles.jpg?v=1759745336&width=400",
   },
   {
     title: "Oily Skin",
@@ -41,7 +45,8 @@ const ingredients = [
   },
   {
     title: "Charcoal",
-    image: "https://dr.rashel.in/cdn/shop/collections/Rice_Water_Products_11zon.jpg?v=1759902898&width=600",
+    image:
+      "https://dr.rashel.in/cdn/shop/collections/Rice_Water_Products_11zon.jpg?v=1759902898&width=600",
   },
   {
     title: "Vitamin C",
@@ -55,7 +60,8 @@ const ingredients = [
   },
   {
     title: "Ubtan",
-    image: "https://dr.rashel.in/cdn/shop/collections/Ubtan_Collection.jpg?v=1759903025&width=600",
+    image:
+      "https://dr.rashel.in/cdn/shop/collections/Ubtan_Collection.jpg?v=1759903025&width=600",
   },
   {
     title: "Coffee",
@@ -66,7 +72,7 @@ const ingredients = [
 
 const SectionHeader = ({ title }) => (
   <div className="flex justify-center mb-10">
-    <div className="bg-[#1D4D6F] text-[#F9A8D4] py-3 px-12 md:px-24 rounded-full border-2 border-[#54A29B] shadow-lg">
+    <div className="bg-[#1D4D6F] text-[#FFFF] py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
       <h2 className="text-lg md:text-2xl font-bold uppercase tracking-wider text-center">
         {title}
       </h2>
@@ -79,7 +85,13 @@ const ShopByConcern = () => {
     <div className="py-12 bg-white px-4 md:px-8">
       {/* Shop By Concern Section */}
       <div className="max-w-7xl mx-auto mb-20">
-        <SectionHeader title="Shop By Concern" />
+        <div className="flex justify-center mb-10">
+          <div className="bg-[#1D4D6F] text-[#FFFF] py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
+            <h2 className="text-lg md:text-2xl font-bold uppercase tracking-wider text-center ">
+              Shop By Concern
+            </h2>
+          </div>
+        </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 md:gap-6 mt-8">
           {concerns.map((item, index) => (
             <div
@@ -100,17 +112,27 @@ const ShopByConcern = () => {
           ))}
         </div>
       </div>
-
+      <div className="w-full h-58 rounded-xl overflow-hidden mb-15">
+        <div className="w-full h-full bg-[url('https://lebrostone1.lifeinfotechinstitute.com/public/assets/front-end/img/banner/banner-ls.jpg')] bg-cover bg-center bg-no-repeat">
+          <div className="flex flex-col  p-10 text-white text-sm md:text-base font-bold uppercase tracking-wide">
+            <h1 className="text-2xl font-bold">Natural Ayurvedic Wellness</h1>
+            <p className="text-sm md:text-base font-normal tracking-wide">
+              Pure herbal solutions for immunity, skin care, hair growth &
+              complete daily health.
+            </p>
+          </div>
+        </div>
+      </div>
       {/* Shop By Ingredients Section */}
       <div className="max-w-7xl mx-auto">
         <SectionHeader title="Shop By Ingredients" />
         <div className="mt-10 relative">
           <Swiper
-             modules={[Autoplay]}
-                    autoplay={{
-                      delay: 1000,
-                      disableOnInteraction: false,
-                    }}
+            modules={[Autoplay]}
+            autoplay={{
+              delay: 1000,
+              disableOnInteraction: false,
+            }}
             spaceBetween={20}
             slidesPerView={1.5}
             pagination={{ clickable: true, el: ".custom-pagination" }}

@@ -25,9 +25,11 @@ const Blog = () => {
   return (
     <section className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Blog</h2>
-          <button className="text-sm font-semibold text-gray-600 hover:text-black transition-colors border-b-2 border-transparent hover:border-black uppercase tracking-wider">
+        <div className="flex items-center justify-between px-20 mb-12 rounded-tl-[35px] py-2 rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg bg-[#1D4D6F]">
+          <h2 className="text-3xl font-bold text-[#FFFF] tracking-tight uppercase ">
+            Blog
+          </h2>
+          <button className="text-sm font-semibold text-[#FFFF] hover:text-black transition-colors border-b-2 border-transparent hover:border-black uppercase tracking-wider">
             View All
           </button>
         </div>

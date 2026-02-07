@@ -35,14 +35,15 @@ const categories = [
 
 const ShopByCat = () => {
   return (
-    <section className="py-16 bg-white font-serif">
+    <section className="py-16 bg-white font-sans">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl text-[#C5A987] tracking-wider mb-3">
-            SHOP BY CATEGORY
-          </h2>
-          <div className="w-24 h-px bg-[#C5A987] mx-auto opacity-50"></div>
+        <div className="flex justify-center mb-12">
+          <div className="bg-[#1D4D6F] text-[#FFFF] py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
+            <h2 className="text-lg md:text-2xl font-bold uppercase tracking-widest text-center">
+              Shop By Category
+            </h2>
+          </div>
         </div>
 
         {/* Grid */}
@@ -76,7 +77,7 @@ const ShopByCat = () => {
               </div>
 
               {/* Title */}
-              <h3 className="mt-6 text-2xl md:text-3xl text-[#C5A987] text-center tracking-wide group-hover:text-[#a38865] transition-colors">
+              <h3 className="mt-6 text-2xl md:text-2xl text-[#C5A987] text-center tracking-wide group-hover:text-[#a38865] transition-colors">
                 {cat.title}
               </h3>
             </div>

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 const ProductDetails = () => {
   const { _id } = useParams();
   const [data, setData] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
   useEffect(() => {
     instance
       .get(`/api/product/getproductbyid/${_id}`)
@@ -35,41 +36,44 @@ const ProductDetails = () => {
       return;
     }
 
-    // Check if product already in cart for this user
-    // instance
-    //   .get(`/api/cart?userId=${user.id}&productId=${data._id}`)
-    //   .then((response) => {
-    //     if (response.data.length > 0) {
-    //       // Product already in cart, update quantity
-    // toast.success("Product already in cart");
-    //       const cartItem = response.data[0];
-    //       instance
-    //         .patch(`/api/cart/${cartItem.id}`, {
-    //           quantity: cartItem.quantity + 1,
-    //         })
-    //         .then(() => {
-    //           toast.success("Product quantity updated in cart!");
-    //         });
-    //     } else {
-    //       // Product not in cart, add new item
-    //       instance
-    //         .post("/api/cart", {
-    //           productId: data._id,
-    //           userId: user.id,
-    //           title: data.title,
-    //           price: data.price,
-    //           image: data.image,
-    //           quantity: 1,
-    //         })
-    //         .then(() => {
-    //           toast.success("Product added to cart successfully!");
-    //         });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error adding product to cart:", err);
-    //     toast.error("Error adding product to cart");
-    //   });
+   // Check if product already in cart for this user
+    instance
+      .post(`/api/cart/get`,{
+        userId:user.id,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.length > 0) {
+          // Product already in cart, update quantity
+    toast.success("Product already in cart");
+          const cartItem = response.data[0];
+          instance
+            .patch(`/api/cart/${cartItem.id}`, {
+              quantity: cartItem.quantity + 1,
+            })
+            .then(() => {
+              toast.success("Product quantity updated in cart!");
+            });
+        } else {
+          // Product not in cart, add new item
+          instance
+            .post("/api/cart", {
+              productId: data._id,
+              userId: user.id,
+              title: data.title,
+              price: data.price,
+              image: data.image,
+              quantity: 1,
+            })
+            .then(() => {
+              toast.success("Product added to cart successfully!");
+            });
+        }
+      })
+      .catch((err) => {
+        console.error("Error adding product to cart:", err);
+        toast.error("Error adding product to cart");
+      });
   };
 
   useEffect(() => {
