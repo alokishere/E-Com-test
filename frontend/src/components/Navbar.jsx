@@ -31,7 +31,7 @@ const Navbar = () => {
         });
     }
   }, [user?.id]);
-//HOME
+  //HOME
 
   const navItems = [
     { name: "HOME", hasDropdown: false, path: "/" },
@@ -60,14 +60,22 @@ const Navbar = () => {
       </div>
 
       {/* Main Header Area (Logo & Icons) */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
-        <div className="flex items-center justify-between">
+      <span>
+        <div className="flex items-center justify-between px-10 py-2">
           {/* Left: House of Baidyanath (Placeholder/Text) */}
-          <a href="/" className="hidden md:flex flex-col text-[10px] items-start font-bold text-gray-800 leading-tight">
-            <p className="text-center w-full text-sm uppercase font-medium">from the house of</p>
-            <span className="h-15 w-auto ">
-           
-              <img className="h-full w-full " src="https://lebrostone1.lifeinfotechinstitute.com/public/assets/front-end/img/logo/Lebroid-logo.png" alt="" />
+          <a
+            href="/"
+            className="hidden md:flex flex-col text-[10px] items-start font-bold text-gray-800 leading-tight"
+          >
+            <p className="text-center w-full text-lg uppercase font-medium ml-4">
+              from the house of
+            </p>
+            <span className="h-10 w-auto ">
+              <img
+                className="h-full w-full "
+                src="https://lebrostone1.lifeinfotechinstitute.com/public/assets/front-end/img/logo/Lebroid-logo.png"
+                alt=""
+              />
             </span>
           </a>
 
@@ -82,13 +90,16 @@ const Navbar = () => {
           {/* Center: Brand Logo */}
           <div className="flex-1 flex justify-center mb-4">
             <a href="/" className="h-15 w-auto">
-              
-            <img className="h-full w-auto object-contain" src="https://lebrostone1.lifeinfotechinstitute.com/storage/app/public/company/2026-02-03-69819fd215449.webp" alt="" />
+              <img
+                className="h-full w-auto object-contain"
+                src="https://lebrostone1.lifeinfotechinstitute.com/storage/app/public/company/2026-02-03-69819fd215449.webp"
+                alt=""
+              />
             </a>
           </div>
 
           {/* Right: Icons & Badge */}
-          <div className="flex items-center gap-4 md:gap-6">
+          <div className=" flex items-center gap-4 md:gap-6">
             <div className="flex items-center gap-3 md:gap-4 text-gray-800">
               <button
                 onClick={() => navigate("/profile")}
@@ -118,14 +129,12 @@ const Navbar = () => {
             {/* Circular Badge (Desktop Only) */}
             <div className="md:block w-12 h-12 border border-gray-800 rounded-full flex items-center flex-wrap justify-center opacity-80">
               <div className="mt-4 text-[5px] text-center leading-none font-bold text-gray-800 uppercase">
-                Research
-                Foundation
-                Since 1917
+                Research Foundation Since 1917
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </span>
 
       {/* Navigation Links (Desktop) */}
       <div className="hidden md:block border-b border-gray-100/50 pb-4">
