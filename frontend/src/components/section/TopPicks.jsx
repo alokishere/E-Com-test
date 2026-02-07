@@ -87,7 +87,7 @@ const TopPicks = () => {
   const filteredProducts = allProducts.filter((p) => p.category === activeTab);
 
   return (
-    <section className="py-16 px-4 max-w-7xl mx-auto relative overflow-hidden bg-white">
+    <section className="py-16 px-2 max-w-7xl mx-auto relative overflow-hidden bg-white">
       {/* Header */}
       <div className="flex justify-center mb-10">
         <div className="bg-[#1D4D6F] text-[#FFFF] py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">

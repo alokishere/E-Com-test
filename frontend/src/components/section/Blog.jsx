@@ -29,7 +29,7 @@ const Blog = () => {
           <h2 className="text-3xl font-bold text-[#FFFF] tracking-tight uppercase ">
             Blog
           </h2>
-          <button className="text-sm font-semibold text-[#FFFF] hover:text-black transition-colors border-b-2 border-transparent hover:border-black uppercase tracking-wider">
+          <button className="text-sm hidden sm:block font-semibold text-[#FFFF] hover:text-black transition-colors border-b-2 border-transparent hover:border-black uppercase tracking-wider">
             View All
           </button>
         </div>

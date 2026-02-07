@@ -33,11 +33,11 @@ const OfferCard = () => {
         onReachBeginning={(swiper) => {
           swiper.params.autoplay.reverseDirection = false;
         }}
-        className="w-full h-[60vh]"
+        className="w-full"
       >
         {offers.map((offer, index) => (
           <SwiperSlide key={index}>
-            <div className="w-full h-full">
+            <div className="w-full">
               <img src={offer.image} alt="" className="w-full h-full object-cover" />
             </div>
           </SwiperSlide>

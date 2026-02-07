@@ -11,14 +11,14 @@ const Benifites = () => {
     ];
 
     return (
-        <div className='bg-[#F8F5F0] w-full py-3 md:py-0 md:h-16 flex items-center'>
-            <div className='container mx-auto flex flex-col md:flex-row justify-center items-center gap-6 px-4'>
+        <div className='bg-[#F8F5F0] px-2 w-full py-3 md:py-0 md:h-16 flex items-center'>
+            <div className='container mx-auto flex flex-row md:text-sm text-xs justify-center items-center gap-6 px-4'>
                 {items.map((item, idx) => (
                     <div key={idx} className='flex items-center gap-4 text-black group'>
-                        <span className='text-3xl transition-transform duration-300 group-hover:scale-110'>
+                        <span className='text-3xl md:text-2xl transition-transform duration-300 group-hover:scale-110'>
                             {item.icon}
                         </span>
-                        <p className='text-sm md:text-sm font-thin uppercase tracking-wider'>
+                        <p className='text-xs md:text-xs font-thin uppercase tracking-wider'>
                             {item.title}
                         </p>
                     </div>
