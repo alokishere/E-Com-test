@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
+import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -9,77 +9,93 @@ const TopPicks = () => {
   const [activeTab, setActiveTab] = useState("BESTSELLERS");
   const swiperRef = useRef(null);
 
-  const categories = ["BESTSELLERS", "NEW ARRIVAL", "COMBOS"];
+  const categories = ["BESTSELLERS", "NEW ARRIVAL"];
 
   const allProducts = [
     {
       id: 1,
-      title: "Soundaryam Kumkumadi Serum Saffron & Wheat Germ Oil",
-      price: 1836,
-      originalPrice: 2295,
+      title: "Lebrostone Shilajit",
+      price: 229,
+      originalPrice: 349,
       discount: "20% OFF",
       rating: 5,
-      reviews: 2,
+      reviews: 88,
       image:
         "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1000&auto=format&fit=crop",
-      badge: "CERTIFICATE OF PURITY",
+      badge: "NEW LAUNCH",
       category: "BESTSELLERS",
       action: "ADD TO CART",
     },
     {
       id: 2,
-      title: "Hair Growth Tonic Rosemary & Aloevera",
-      price: 719,
-      originalPrice: 899,
+      title: "Lebrostone Jamun Powder",
+      price: 299,
+      originalPrice: 399,
       discount: "20% OFF",
       rating: 5,
-      reviews: 23,
+      reviews: 93,
       image:
         "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=1000&auto=format&fit=crop",
-      badge: "AYURVEDIC FORMULA",
+      badge: "NEW LAUNCH",
       category: "BESTSELLERS",
       action: "ADD TO CART",
     },
     {
       id: 3,
-      title: "Gold And Saffron Glowing Face Gel With 24 Carat Gold",
-      price: 1999,
-      originalPrice: 2499,
-      isStartingPrice: true,
-      discount: "20% OFF",
-      rating: 5,
-      reviews: 42,
-      image:
-        "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=1000&auto=format&fit=crop",
-      category: "BESTSELLERS",
-      action: "CHOOSE OPTION",
-    },
-    {
-      id: 4,
-      title: "Gulab Arka Indian Rose Water",
-      price: 319,
+      title: "Lebrostone Face Pack Soap",
+      price: 299,
       originalPrice: 399,
       isStartingPrice: true,
       discount: "20% OFF",
       rating: 5,
-      reviews: 42,
+      reviews: 93,
       image:
-        "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?q=80&w=1000&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=1000&auto=format&fit=crop",
+      badge: "NEW LAUNCH",
       category: "BESTSELLERS",
-      action: "CHOOSE OPTION",
+      action: "ADD TO CART",
     },
-    // Add more for other categories to demonstrate filtering
+    {
+      id: 4,
+      title: "Lebrostone Shilajit",
+      price: 229,
+      originalPrice: 349,
+      discount: "20% OFF",
+      rating: 5,
+      reviews: 88,
+      image:
+        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1000&auto=format&fit=crop",
+      badge: "NEW LAUNCH",
+      category: "BESTSELLERS",
+      action: "ADD TO CART",
+    },
     {
       id: 5,
-      title: "Radiance Face Wash with Vitamin C",
-      price: 499,
-      originalPrice: 599,
-      discount: "15% OFF",
-      rating: 4,
-      reviews: 15,
+      title: "Lebrostone Jamun Powder",
+      price: 299,
+      originalPrice: 399,
+      discount: "20% OFF",
+      rating: 5,
+      reviews: 93,
       image:
-        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=1000&auto=format&fit=crop",
-      category: "NEW ARRIVAL",
+        "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=1000&auto=format&fit=crop",
+      badge: "NEW LAUNCH",
+      category: "BESTSELLERS",
+      action: "ADD TO CART",
+    },
+    {
+      id: 6,
+      title: "Lebrostone Face Pack Soap",
+      price: 299,
+      originalPrice: 399,
+      isStartingPrice: true,
+      discount: "20% OFF",
+      rating: 5,
+      reviews: 93,
+      image:
+        "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=1000&auto=format&fit=crop",
+      badge: "NEW LAUNCH",
+      category: "BESTSELLERS",
       action: "ADD TO CART",
     },
   ];
@@ -87,10 +103,10 @@ const TopPicks = () => {
   const filteredProducts = allProducts.filter((p) => p.category === activeTab);
 
   return (
-    <section className="py-16 px-2 max-w-7xl mx-auto relative overflow-hidden bg-white">
+    <section className="py-20 px-2 max-w-7xl mx-auto pl-8 relative bg-white">
       {/* Header */}
-      <div className="flex justify-center mb-10">
-        <div className="bg-[#1D4D6F] text-[#FFFF] py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
+      <div className="flex justify-center mb-16">
+        <div className="bg-[#1D4D6F] text-white py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
           <h2 className="text-lg md:text-2xl font-bold uppercase tracking-widest text-center">
             Top Picks This Season
           </h2>
@@ -98,7 +114,7 @@ const TopPicks = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex w-fit mx-auto items-center justify-center mb-10 bg-[#D2B48C] rounded-full p-1.5 shadow-sm">
+      <div className="flex w-fit mx-auto items-center justify-center mb-16 bg-[#D2B48C] rounded-full p-1.5 shadow-sm">
         {categories.map((category) => (
           <button
             key={category}
@@ -115,122 +131,101 @@ const TopPicks = () => {
       </div>
 
       {/* Slider Container */}
-      <div className="relative group">
+      <div className="relative">
+        {/* Navigation Buttons */}
+        <button
+          className="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-100 text-gray-800 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300"
+          onClick={() => swiperRef.current?.slidePrev()}
+        >
+          <FaChevronLeft className="text-xl" />
+        </button>
+
+        <button
+          className="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-100 text-gray-800 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300"
+          onClick={() => swiperRef.current?.slideNext()}
+        >
+          <FaChevronRight className="text-xl" />
+        </button>
+
         <Swiper
           modules={[Navigation, Autoplay]}
-          spaceBetween={24}
+          spaceBetween={32}
           slidesPerView={1}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
           breakpoints={{
-            640: { slidesPerView: 2 },
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
-            1280: { slidesPerView: 4 },
           }}
-          className="pb-12"
+          autoplay={{
+            delay: 1000,
+            disableOnInteraction: false,
+          }}
+          loop={true}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          className="p-10"
         >
-          {filteredProducts.map((product) => (
-            <SwiperSlide key={product.id}>
-              <div className="flex flex-col h-full hover-card-animation">
-                {/* Image Container */}
-                <div className="relative aspect-square mb-4 overflow-hidden bg-gray-50 rounded-lg group/img">
-                  {/* Discount Badge */}
-                  <div className="absolute top-4 left-0 z-10 bg-black text-white text-[10px] font-bold px-3 py-1.5">
-                    {product.discount}
+          {filteredProducts.map((product, index) => (
+            <SwiperSlide key={`${product.id}-${index}`}>
+              <div className="p-10">
+                {/* Floating Image - Top Left */}
+                <div className="relative flex items-center justify-center w-90">
+                  <div className="absolute -top-10 -left-10 w-45 aspect-square rounded-xl p-1 bg-white shadow-xl overflow-hidden z-10 transition-transform duration-200">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-200"
+                    />
                   </div>
-
-                  {/* Certification Badge (Simulated) */}
-                  {product.id % 2 === 1 && (
-                    <div className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-[#B8860B]/10 border border-[#B8860B]/20 flex items-center justify-center p-1 backdrop-blur-sm">
-                      <div className="w-full h-full rounded-full border border-dashed border-[#B8860B]/40 flex items-center justify-center text-[6px] text-[#B8860B] font-bold text-center leading-none uppercase">
-                        Cert of Purity
-                      </div>
-                    </div>
-                  )}
-                  {product.id % 2 === 0 && (
-                    <div className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-[#4A5D23]/10 border border-[#4A5D23]/20 flex items-center justify-center p-2 backdrop-blur-sm">
-                      <div className="w-full h-full rounded-full border border-[#4A5D23]/40 flex items-center justify-center">
-                        <div className="w-1.5 h-3 border-r-2 border-b-2 border-[#4A5D23] rotate-45 transform -translate-y-0.5" />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Product Image */}
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover/img:scale-105"
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="flex flex-col grow">
-                  <h3 className="text-xs md:text-[13px] font-medium leading-tight text-gray-800 mb-2 min-h-[40px]">
-                    {product.title}
-                  </h3>
-
-                  {/* Pricing */}
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <span className="text-gray-400 line-through text-xs">
-                      ₹ {product.originalPrice}
-                    </span>
-                    <span className="text-black font-bold text-sm">
-                      {product.isStartingPrice && (
-                        <span className="text-[10px] font-medium mr-1 uppercase">
-                          From
+                  {/* Main Card Background */}
+                  <div className="bg-[#ffffff] rounded-xl p-2 pl-[42%] pt-10 pb-10 h-72 w-90 shadow-sm hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between border border-gray-100">
+                    {/* Content Right Side */}
+                    <div className="flex flex-col items-start gap-3 h-full w-full">
+                      {/* Badge */}
+                      <div className="mb-2">
+                        <span className="bg-[#FF3F6C] text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide">
+                          {product.badge}
                         </span>
-                      )}
-                      ₹ {product.price}
-                    </span>
-                  </div>
+                      </div>
 
-                  {/* Rating */}
-                  <div className="flex items-center gap-1.5 mb-4">
-                    <div className="flex text-[#FFB800] text-[10px]">
-                      {[...Array(5)].map((_, i) => (
-                        <FaStar key={i} />
-                      ))}
+                      {/* Title */}
+                      <h3 className="text-gray-900 font-bold text-xl leading-snug line-clamp-2">
+                        {product.title}
+                      </h3>
+
+                      {/* Rating */}
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex text-[#FFB800] text-base">
+                          {[...Array(5)].map((_, i) => (
+                            <FaStar key={i} />
+                          ))}
+                        </div>
+                        <span className="text-gray-500 text-sm font-medium">
+                          ({product.reviews} Reviews)
+                        </span>
+                      </div>
+
+                      {/* Price */}
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-gray-400 line-through text-lg font-medium">
+                          ₹{product.originalPrice}
+                        </span>
+                        <span className="text-3xl font-extrabold text-[#111]">
+                          ₹{product.price}
+                        </span>
+                      </div>
+
+                      {/* Button */}
+                      <button className="w-40 bg-[#00A859] hover:bg-[#008f4c] text-white py-3.5 rounded-full font-bold text-sm tracking-wide shadow-md transition-all transform hover:scale-[1.02] mt-auto">
+                        {product.action}
+                      </button>
                     </div>
-                    <span className="text-[11px] text-gray-500">
-                      {product.reviews} review
-                    </span>
                   </div>
-
-                  {/* Action Button */}
-                  <button className="mt-auto w-full py-2.5 border border-black text-black text-[11px] font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-colors duration-300">
-                    {product.action}
-                  </button>
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-
-        {/* Navigation Arrows */}
-        <button
-          onClick={() => swiperRef.current?.slidePrev()}
-          className="absolute left-0 top-[40%] -translate-y-1/2 -translate-x-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-50 transition-all opacity-0 group-hover:opacity-100 hidden md:flex"
-        >
-          <FaChevronLeft size={16} />
-        </button>
-        <button
-          onClick={() => swiperRef.current?.slideNext()}
-          className="absolute right-0 top-[40%] -translate-y-1/2 translate-x-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-50 transition-all opacity-0 group-hover:opacity-100 hidden md:flex"
-        >
-          <FaChevronRight size={16} />
-        </button>
       </div>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-                .hover-card-animation {
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                }
-                .hover-card-animation:hover {
-                    transform: translateY(-5px);
-                }
-            `,
-        }}
-      />
     </section>
   );
 };

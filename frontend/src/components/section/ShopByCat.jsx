@@ -1,39 +1,46 @@
-import React from "react";
+import React, { useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import "swiper/css";
+import "swiper/css/navigation";
 
-const categories = [
+const skinConcerns = [
   {
-    title: "Man's Health",
+    title: "ACNE",
     image:
-      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Weight Management",
+    title: "BLACK HEADS",
     image:
-      "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Daily Wellness",
+    title: "TANNING",
     image:
-      "https://mantraherbal.in/cdn/shop/files/Our_Formulation_Process_medium.jpg?v=1754301805",
+      "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Skin Care",
+    title: "DRY SKIN",
     image:
-      "https://mantraherbal.in/cdn/shop/files/Our_Mission_medium.jpg?v=1754301805",
+      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Hair Care",
+    title: "WRINKLES",
     image:
-      "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=2969&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1611689342806-0863700ce1e4?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Woman's Health",
+    title: "OILY SKIN",
     image:
-      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop",
   },
 ];
 
-const ShopByCat = () => {
+const SkinConcerns = () => {
+  const swiperRef = useRef(null);
+
   return (
     <section className="py-16 bg-white font-sans">
       <div className="container mx-auto px-4">
@@ -41,51 +48,73 @@ const ShopByCat = () => {
         <div className="flex justify-center mb-12">
           <div className="bg-[#1D4D6F] text-[#FFFF] py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
             <h2 className="text-lg md:text-2xl font-bold uppercase tracking-widest text-center">
-              Shop By Category
+              Shop By Concern
             </h2>
           </div>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 max-w-7xl mx-auto">
-          {categories.map((cat, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center group cursor-pointer"
-            >
-              {/* Card Container */}
-              <div className="relative p-6 w-full aspect-square transition-transform duration-500 group-hover:scale-[1.02]">
-                {/* Decorative Frame */}
-                {/* Outer styling lines */}
-                <div className="absolute inset-0 border border-[#C5A987]/30"></div>
+        {/* Swiper Container */}
+        <div className="relative max-w-7xl mx-auto">
+          {/* Navigation Buttons */}
+          <button
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-100 text-gray-800 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 -ml-6"
+            onClick={() => swiperRef.current?.slidePrev()}
+          >
+            <FaChevronLeft className="text-xl" />
+          </button>
 
-                {/* Corner decorative images (simulated with pseudo-elements or css shapes if no tech) */}
-                {/* Top Left Leaf */}
-                <div className="absolute -top-4 -left-4 w-24 h-24 opacity-20 bg-[url('https://cdn-icons-png.flaticon.com/512/66/66250.png')] bg-no-repeat bg-contain rotate-90 pointer-events-none"></div>
-                {/* Bottom Right Leaf */}
-                <div className="absolute -bottom-4 -right-4 w-24 h-24 opacity-20 bg-[url('https://cdn-icons-png.flaticon.com/512/66/66250.png')] bg-no-repeat bg-contain -rotate-90 pointer-events-none"></div>
+          <button
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-100 text-gray-800 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 -mr-6"
+            onClick={() => swiperRef.current?.slideNext()}
+          >
+            <FaChevronRight className="text-xl" />
+          </button>
 
-                {/* Main Image Box */}
-                <div className="h-full w-full relative z-10 overflow-hidden bg-[#FAF6EA]">
-                  <div className="absolute inset-4 border border-[#C5A987]/50 z-20 pointer-events-none"></div>
-                  <img
-                    src={cat.image}
-                    alt={cat.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            spaceBetween={24}
+            slidesPerView={2}
+            breakpoints={{
+              640: { slidesPerView: 3 },
+              768: { slidesPerView: 4 },
+              1024: { slidesPerView: 6 },
+            }}
+            autoplay={{
+              delay: 1000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            speed={800}
+            loop={true}
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            className="px-4"
+          >
+            {skinConcerns.map((concern, index) => (
+              <SwiperSlide key={index}>
+                <div className="flex flex-col items-center group cursor-pointer">
+                  {/* Image Container */}
+                  <div className="relative w-full aspect-square mb-4 overflow-hidden rounded-3xl shadow-md transition-transform duration-300 group-hover:scale-105">
+                    <img
+                      src={concern.image}
+                      alt={concern.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-sm md:text-base font-semibold text-gray-800 text-center tracking-wide uppercase">
+                    {concern.title}
+                  </h3>
                 </div>
-              </div>
-
-              {/* Title */}
-              <h3 className="mt-6 text-2xl md:text-2xl text-[#C5A987] text-center tracking-wide group-hover:text-[#a38865] transition-colors">
-                {cat.title}
-              </h3>
-            </div>
-          ))}
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </section>
   );
 };
 
-export default ShopByCat;
+export default SkinConcerns;

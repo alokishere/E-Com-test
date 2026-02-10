@@ -8,10 +8,20 @@ import Products from "../pages/Products";
 import ProductDetails from "../components/cards/ProductDetails";
 import CreateProduct from "../components/cards/CreateProduct";
 import Cart from "../pages/Cart";
+import AdminDashboard from "../admin/AdminDashboard";
+import Dashboard from "../admin/Dashboard";
 const Mainroutes = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   return (
     <Routes>
+      {user?.isAdmin ?<>
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/dashboard" element={<Dashboard/>} >
+      </Route>
+      
+      </>:(<>
+      <Route path="/admin/dashboard" element={<Navigate to="/profile" />} />
+      </>)}
       <Route path="/" element={<Home />} />
       {user ? (<>
       <Route path="/login" element={<Navigate to="/profile" />} />

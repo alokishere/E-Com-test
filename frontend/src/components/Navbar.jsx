@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CiUser, CiSearch, CiShoppingBasket } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import { HiMenuAlt3 } from "react-icons/hi";
+
 import {
   IoChevronDown,
   IoChevronBack,
@@ -9,13 +10,15 @@ import {
 } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import instance from "../api/AxiosConfig";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const { cartCount, setCartCount } = useCart();
   // console.log(user);
   React.useEffect(() => {
     if (user) {
@@ -31,11 +34,15 @@ const Navbar = () => {
         });
     }
   }, [user?.id]);
+
+
+
+  
 //HOME
 
   const navItems = [
     { name: "HOME", hasDropdown: false, path: "/" },
-    { name: "MEN'S HEALTH", hasDropdown: false },
+    { name: "MEN'S HEALTH", hasDropdown: false , path: "/products"},
     { name: "DAILY WELLNESS", hasDropdown: false },
     { name: "WEIGHT MANAGEMENT", hasDropdown: false },
     { name: "HAIR CARE", hasDropdown: false },
@@ -44,7 +51,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#FAF6EA] shadow-md font-sans">
+    <nav className="top-0 z-50 bg-[#FAF6EA] shadow-md font-sans">
       {/* Top Banner */}
       <div className="bg-[#00a758] text-white py-2 px-4 flex justify-center items-center relative text-[10px] md:text-xs font-thin tracking-widest">
         <button className="absolute left-4 md:left-20 text-white/80 hover:text-white">
@@ -60,7 +67,7 @@ const Navbar = () => {
       </div>
 
       {/* Main Header Area (Logo & Icons) */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+      <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
         <div className="flex items-center justify-between">
           {/* Left: House of Baidyanath (Placeholder/Text) */}
           <a href="/" className="hidden md:flex flex-col text-[10px] items-start font-bold text-gray-800 leading-tight">
@@ -83,7 +90,7 @@ const Navbar = () => {
           <div className="flex-1 flex justify-center mb-4">
             <a href="/" className="h-15 w-auto">
               
-            <img className="h-full w-auto object-contain" src="https://lebrostone1.lifeinfotechinstitute.com/storage/app/public/company/2026-02-03-69819fd215449.webp" alt="" />
+            <img className="h-full w-auto object-contain" src="/logo.png" alt="" />
             </a>
           </div>
 

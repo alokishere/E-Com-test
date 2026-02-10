@@ -25,16 +25,11 @@ const Blog = () => {
   return (
     <section className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between px-20 mb-12 rounded-tl-[35px] py-2 rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg bg-[#1D4D6F]">
-          <h2 className="text-3xl font-bold text-[#FFFF] tracking-tight uppercase ">
-            Blog  
-
-
-            
-          </h2>
-          <button className="text-sm hidden sm:block font-semibold text-[#FFFF] hover:text-black transition-colors border-b-2 border-transparent hover:border-black uppercase tracking-wider">
-            View All
-          </button>
+        <div className="px-20 mb-12 rounded-tl-[35px] w-fit mx-auto py-2 rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg bg-[#1D4D6F]">
+          <p className="text-3xl w-fit font-bold text-[#FFFF] tracking-tight uppercase ">
+            Blog    
+          </p>
+          
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {data.map((item, index) => (
@@ -58,6 +53,9 @@ const Blog = () => {
             </article>
           ))}
         </div>
+        <button className="mt-10 mx-auto block bg-transparent border border-[#1D4D6F] text-[#1D4D6F] px-6 py-3 rounded-lg font-bold hover:bg-[#0f2c42] hover:text-white transition-colors">
+          View All
+        </button>
       </div>
     </section>
   );

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import Footer from "../components/section/Footer";
 import instance from "../api/AxiosConfig";
 
@@ -9,42 +7,88 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+
+  const user = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  })();
 
   useEffect(() => {
-    if (!user) {
+    if (!user?._id && !user?.id) {
       navigate("/login");
       return;
     }
     fetchCart();
-  }, [user?.id]);
+  }, []);
 
-  const fetchCart = () => {
-    instance
-      .post(`/api/cart/get`,{userId:user.id})
-      .then((response) => {
-       setCartItems(response.data.cart.items);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching cart:", err);
-        setLoading(false);
+  // ✅ FIXED FETCH CART
+ const fetchCart = async () => {
+    try {
+      const userId = user._id || user.id;
+
+      const cartRes = await instance.post("/api/cart/get", {
+        userId,
       });
+
+      const items = await Promise.all(
+        cartRes.data.cart.items.map(async (item) => {
+          const prodRes = await instance.get(
+            `/api/product/getproductbyid/${item.productId}`,
+          );
+
+          const product = prodRes.data.product;
+
+          return {
+            id: item._id,
+            productId: product._id,
+            title: product.title,
+            price: product.price,
+            image: product.image,
+            quantity: item.quantity,
+          };
+        }),
+      );
+
+      setCartItems(items);
+    } catch (err) {
+      console.error("Error fetching cart:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const updateQuantity = (id, newQty) => {
+  const updateQuantity = async (cartItemId, newQty) => {
     if (newQty < 1) return;
-    instance
-      .patch(`/cart/${id}`, { quantity: newQty })
-      .then(() => fetchCart());
+
+    try {
+      await instance.patch("/api/cart/update", {
+        cartItemId,
+        quantity: newQty,
+      });
+      fetchCart();
+    } catch (err) {
+      console.error("Error updating quantity:", err);
+    }
   };
 
-  const removeItem = (id) => {
-    instance.delete(`/cart/${id}`).then(() => fetchCart());
-  };
+const removeItem = async (cartItemId) => {
+  try {
+    await instance.delete("/api/cart/remove", {
+      data: { cartItemId }, // 👈 IMPORTANT
+    });
+
+    fetchCart();
+  } catch (err) {
+    console.error("Error removing item:", err);
+  }
+};
+
 
   const totalPrice = cartItems.reduce(
-    (acc, item) => acc + parseFloat(item.price) * item.quantity,
+    (acc, item) => acc + item.price * item.quantity,
     0,
   );
 
@@ -53,8 +97,6 @@ const Cart = () => {
 
   return (
     <div className="bg-[#FAF6EA] min-h-screen flex flex-col">
-      <Navbar />
-
       <main className="grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-4xl font-black text-gray-900 mb-10">
           Your Shopping Cart
@@ -82,7 +124,7 @@ const Cart = () => {
             <div className="lg:col-span-2 space-y-6">
               {cartItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="flex flex-col sm:flex-row items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-50 transition-all hover:shadow-md"
                 >
                   <div className="w-32 h-32 shrink-0 bg-gray-50 rounded-xl overflow-hidden mb-4 sm:mb-0 mr-0 sm:mr-6">
