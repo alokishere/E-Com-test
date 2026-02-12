@@ -8,6 +8,7 @@ import Reviews from "../components/section/Reviews";
 import Blog from "../components/section/Blog";
 import Trusted from "../components/section/Trusted";
 import Footer from "../components/section/Footer";
+import VideoSection from "../components/section/VideoSection";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <ShopByCat />
       <ShopByConcern />
       <Reviews />
+      <VideoSection />
       <Blog />
       <Trusted />
       <Footer />

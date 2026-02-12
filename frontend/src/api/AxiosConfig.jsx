@@ -1,13 +1,8 @@
-import axios from 'axios';
-
+import axios from "axios";
 
 const instance = axios.create({
-    // baseURL: 'https://e-com-test-131t.onrender.com/',
-    baseURL: 'http://localhost:3000',
-// 
-})
+  baseURL: "https://lebrostonebackend.lifeinfotechinstitute.com",
+  withCredentials: true,
+});
 
-
-
-
-export default instance;    
+export default instance;

@@ -1,5 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronDown, ChevronUp, Star, ThumbsUp, FileText, Lightbulb, HelpCircle, MessageSquare } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Star,
+  ThumbsUp,
+  FileText,
+  Lightbulb,
+  HelpCircle,
+  MessageSquare,
+} from "lucide-react";
 
 const ProductDetailsBottom = ({ data }) => {
   const [expandedFAQ, setExpandedFAQ] = useState(null);
@@ -20,113 +29,35 @@ const ProductDetailsBottom = ({ data }) => {
   };
 
   // Sample data
+  // Use data from props or fall back to empty defaults
   const productData = {
-    description: `Pamper your skin with the age-old tradition of Ubtan and let your dull, tanned skin rejuvenate, feel fresh & bright. Undo the effects of tan, pollution, dirt, harmful UV rays, and harsh weather conditions.`,
-    
-    keyIngredients: [
+    description: data?.description || "No description available.",
+    keyIngredients: data?.keyIngredients || [
       {
-        name: "Turmeric",
-        description: "With anti-Inflammatory and antiseptic properties, Turmeric protects the skin naturally. It revives the skin by bringing out its natural glow while delaying premature aging.",
-        icon: "🌿"
+        name: "Natural Ingredients",
+        description: "Formulated with high-quality natural extracts.",
+        icon: "🌿",
       },
-      {
-        name: "Walnut Beads",
-        description: "Walnut Beads exfoliates the dead cells from the upper layer of the skin leaving the skin refreshed and bright.",
-        icon: "🥜"
-      },
-      {
-        name: "Saffron",
-        description: "Saffron contains many vitamins and antioxidants that are beneficial for the skin. It not only adds to the skin's natural radiance & glow but also soothes it.",
-        icon: "✨"
-      },
-      {
-        name: "Carrot Seed Oil",
-        description: "Helps remove tan and spots from the skin while revealing a natural glow.",
-        icon: "🥕"
-      }
     ],
-
-    faqs: [
+    faqs: data?.faqs || [
       {
-        question: "Will it Make My Skin Dry?",
-        answer: "No, this product is formulated with natural moisturizing ingredients like Carrot Seed Oil and Saffron that keep your skin hydrated while cleansing."
+        question: "Is this product safe?",
+        answer:
+          "Yes, our products are dermatologically tested and safe for use.",
       },
-      {
-        question: "How Often Should I Use It?",
-        answer: "We recommend using this face wash twice daily - morning and night - for best results. Adjust frequency based on your skin's response."
-      },
-      {
-        question: "Will the Beads Damage My Sensitive Skin?",
-        answer: "The Walnut Beads are finely ground and gentle. However, if you have very sensitive skin, use gently or reduce frequency to 3-4 times a week."
-      },
-      {
-        question: "What Are the Benefits of Ubtan Natural Glow Face Wash?",
-        answer: "It removes tan, brightens skin, exfoliates dead cells, reduces excess oil, and helps achieve a natural glow with regular use."
-      },
-      {
-        question: "Will it Make My Skin Clear?",
-        answer: "Yes, with regular use, it helps reduce acne, blackheads, and breakouts due to the antiseptic properties of turmeric and natural exfoliation."
-      },
-      {
-        question: "Is it Free Sulfates & Toxins?",
-        answer: "Yes, this product is completely sulfate-free and contains no harmful chemicals or toxins, making it safe for all skin types."
-      },
-      {
-        question: "Can Teenagers Use It?",
-        answer: "Absolutely! This face wash is suitable for teenagers and is particularly beneficial for oily and acne-prone skin common during teenage years."
-      }
     ],
-
-    reviews: [
-      {
-        author: "Girija",
-        date: "Jan 30, 2026",
-        rating: 5,
-        verified: true,
-        title: "Best for Sensitive Skin",
-        content: "After using mama Earth ubtan facewash my face remains acne free and i have sensitive skin but it does not have any side-effects on my skin my face remains clean and glow",
-        helpful: 245
-      },
-      {
-        author: "Veena Mehra",
-        date: "Jan 28, 2026",
-        rating: 5,
-        verified: true,
-        title: "Great for Oil Control",
-        content: "I have been using this facewash for the last 2 months ... Helps in reducing excess oil and exfoliate too.. must try.",
-        helpful: 189
-      },
-      {
-        author: "Akshya sharma",
-        date: "Jan 9, 2026",
-        rating: 5,
-        verified: true,
-        title: "Highly Effective",
-        content: "Its really effective..I am using it since past 2 months now.. loved the results.. do try out",
-        helpful: 156
-      },
-      {
-        author: "Ankita",
-        date: "Jan 3, 2026",
-        rating: 5,
-        verified: true,
-        title: "Must Have in Skincare Routine",
-        content: "This face wash is really good. It removes dirt, dead skin and black heads. Goodness of turmeric and saffron make my skin glowing and healthy. It is must have in your daily skin care routine.",
-        helpful: 312
-      }
-    ],
-
-    ratings: {
-      average: 4.9,
-      total: 185,
+    reviews: data?.reviews || [],
+    ratings: data?.ratings || {
+      average: data?.rating || 0,
+      total: data?.reviews_count || 0,
       distribution: [
-        { stars: 5, count: 166 },
-        { stars: 4, count: 17 },
-        { stars: 3, count: 2 },
+        { stars: 5, count: 0 },
+        { stars: 4, count: 0 },
+        { stars: 3, count: 0 },
         { stars: 2, count: 0 },
-        { stars: 1, count: 0 }
-      ]
-    }
+        { stars: 1, count: 0 },
+      ],
+    },
   };
 
   // Detect scroll and update active section
@@ -136,7 +67,7 @@ const ProductDetailsBottom = ({ data }) => {
         { id: "description", ref: descriptionRef },
         { id: "ingredients", ref: ingredientsRef },
         { id: "faq", ref: faqRef },
-        { id: "reviews", ref: reviewsRef }
+        { id: "reviews", ref: reviewsRef },
       ];
 
       for (let section of sections) {
@@ -158,12 +89,12 @@ const ProductDetailsBottom = ({ data }) => {
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
     const ref = sectionRefs[sectionId];
-    
+
     if (ref.current) {
       const offsetTop = ref.current.offsetTop - 80;
       window.scrollTo({
         top: offsetTop,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   };
@@ -176,7 +107,7 @@ const ProductDetailsBottom = ({ data }) => {
     { id: "description", label: "Description", icon: FileText },
     { id: "ingredients", label: "Ingredients", icon: Lightbulb },
     { id: "faq", label: "FAQs", icon: HelpCircle },
-    { id: "reviews", label: "Reviews", icon: MessageSquare }
+    { id: "reviews", label: "Reviews", icon: MessageSquare },
   ];
 
   return (
@@ -218,24 +149,29 @@ const ProductDetailsBottom = ({ data }) => {
               <h2 className="text-3xl font-black text-gray-900 mb-4">
                 Product Description
               </h2>
-              <p className="text-gray-700 text-lg leading-relaxed">
-                {productData.description}
-              </p>
+              <div
+                className="text-gray-700 text-lg leading-relaxed product-description"
+                dangerouslySetInnerHTML={{ __html: productData.description }}
+              />
             </div>
 
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">How to Use</h3>
-              <div className="bg-gradient-to-br from-cyan-50 to-green-50 border-l-4 border-cyan-500 p-8 rounded-lg">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                How to Use
+              </h3>
+              <div className="bg-linear-to-br from-cyan-50 to-green-50 border-l-4 border-cyan-500 p-8 rounded-lg">
                 <ol className="space-y-4 text-gray-700">
                   {[
                     "Wet your face with lukewarm water",
                     "Take a small amount of the face wash and apply it gently on your face",
                     "Massage in circular motions for 1-2 minutes",
                     "Rinse thoroughly with water",
-                    "Use morning and night for best results"
+                    "Use morning and night for best results",
                   ].map((step, idx) => (
                     <li key={idx} className="flex gap-4">
-                      <span className="font-bold text-cyan-600 flex-shrink-0 text-xl">{idx + 1}.</span>
+                      <span className="font-bold text-cyan-600 shrink-0 text-xl">
+                        {idx + 1}.
+                      </span>
                       <span className="text-lg">{step}</span>
                     </li>
                   ))}
@@ -244,10 +180,24 @@ const ProductDetailsBottom = ({ data }) => {
             </div>
 
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Suitable For</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Suitable For
+              </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {["All Skin Types", "Oily Skin", "Acne-Prone", "Sensitive Skin", "Tanned Skin", "Dull Skin", "Combination", "Normal Skin"].map((item) => (
-                  <div key={item} className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg text-center border border-gray-300 hover:border-cyan-300 transition-colors">
+                {[
+                  "All Skin Types",
+                  "Oily Skin",
+                  "Acne-Prone",
+                  "Sensitive Skin",
+                  "Tanned Skin",
+                  "Dull Skin",
+                  "Combination",
+                  "Normal Skin",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="bg-linear-to-br from-gray-50 to-gray-100 p-4 rounded-lg text-center border border-gray-300 hover:border-cyan-300 transition-colors"
+                  >
                     <p className="text-gray-700 font-medium">{item}</p>
                   </div>
                 ))}
@@ -262,7 +212,9 @@ const ProductDetailsBottom = ({ data }) => {
           className="py-12 border-b border-gray-200"
         >
           <div className="space-y-8 animate-fade-in">
-            <h2 className="text-3xl font-black text-gray-900">Key Ingredients</h2>
+            <h2 className="text-3xl font-black text-gray-900">
+              Key Ingredients
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {productData.keyIngredients.map((ingredient, index) => (
                 <div
@@ -272,8 +224,12 @@ const ProductDetailsBottom = ({ data }) => {
                   <div className="flex items-start gap-4">
                     <span className="text-5xl">{ingredient.icon}</span>
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-gray-900 mb-3">{ingredient.name}</h4>
-                      <p className="text-gray-700 leading-relaxed text-sm">{ingredient.description}</p>
+                      <h4 className="text-xl font-bold text-gray-900 mb-3">
+                        {ingredient.name}
+                      </h4>
+                      <p className="text-gray-700 leading-relaxed text-sm">
+                        {ingredient.description}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -283,10 +239,7 @@ const ProductDetailsBottom = ({ data }) => {
         </section>
 
         {/* FAQs Section */}
-        <section
-          ref={faqRef}
-          className="py-12 border-b border-gray-200"
-        >
+        <section ref={faqRef} className="py-12 border-b border-gray-200">
           <div className="space-y-6 animate-fade-in">
             <h2 className="text-3xl font-black text-gray-900 mb-8">
               Frequently Asked Questions
@@ -298,10 +251,12 @@ const ProductDetailsBottom = ({ data }) => {
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full flex justify-between items-center p-6 bg-gradient-to-r from-gray-50 to-white hover:from-gray-100 transition-colors"
+                  className="w-full flex justify-between items-center p-6 bg-linear-to-r from-gray-50 to-white hover:from-gray-100 transition-colors"
                 >
-                  <span className="text-lg font-bold text-gray-900 text-left">{faq.question}</span>
-                  <div className="flex-shrink-0 ml-4">
+                  <span className="text-lg font-bold text-gray-900 text-left">
+                    {faq.question}
+                  </span>
+                  <div className="shrink-0 ml-4">
                     {expandedFAQ === index ? (
                       <ChevronUp className="w-6 h-6 text-cyan-600" />
                     ) : (
@@ -310,8 +265,10 @@ const ProductDetailsBottom = ({ data }) => {
                   </div>
                 </button>
                 {expandedFAQ === index && (
-                  <div className="p-6 bg-gradient-to-br from-cyan-50 to-white border-t-2 border-gray-200 animate-slide-down">
-                    <p className="text-gray-700 leading-relaxed text-lg">{faq.answer}</p>
+                  <div className="p-6 bg-linear-to-br from-cyan-50 to-white border-t-2 border-gray-200 animate-slide-down">
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {faq.answer}
+                    </p>
                   </div>
                 )}
               </div>
@@ -320,10 +277,7 @@ const ProductDetailsBottom = ({ data }) => {
         </section>
 
         {/* Reviews Section */}
-        <section
-          ref={reviewsRef}
-          className="py-12"
-        >
+        <section ref={reviewsRef} className="py-12">
           <div className="space-y-8 animate-fade-in">
             <h2 className="text-3xl font-black text-gray-900 mb-8">
               Customer Ratings & Reviews
@@ -333,7 +287,7 @@ const ProductDetailsBottom = ({ data }) => {
             <div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Overall Rating */}
-                <div className="bg-gradient-to-br from-green-50 to-cyan-50 p-8 rounded-xl text-center border-2 border-green-200">
+                <div className="bg-linear-to-br from-green-50 to-cyan-50 p-8 rounded-xl text-center border-2 border-green-200">
                   <div className="text-6xl font-black text-gray-900 mb-3">
                     {productData.ratings.average}
                   </div>
@@ -359,14 +313,16 @@ const ProductDetailsBottom = ({ data }) => {
                   {productData.ratings.distribution.map((dist) => (
                     <div key={dist.stars} className="flex items-center gap-4">
                       <div className="flex items-center gap-2 w-24">
-                        <span className="font-bold text-gray-700 text-lg">{dist.stars}</span>
+                        <span className="font-bold text-gray-700 text-lg">
+                          {dist.stars}
+                        </span>
                         <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                       </div>
                       <div className="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-cyan-500 to-green-500"
+                          className="h-full bg-linear-to-r from-cyan-500 to-green-500"
                           style={{
-                            width: `${(dist.count / productData.ratings.total) * 100}%`
+                            width: `${(dist.count / productData.ratings.total) * 100}%`,
                           }}
                         ></div>
                       </div>
@@ -381,7 +337,9 @@ const ProductDetailsBottom = ({ data }) => {
 
             {/* Individual Reviews */}
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Top Reviews from Customers</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Top Reviews from Customers
+              </h3>
               <div className="space-y-6">
                 {productData.reviews.map((review, index) => (
                   <div
@@ -392,7 +350,9 @@ const ProductDetailsBottom = ({ data }) => {
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-bold text-gray-900 text-lg">{review.author}</h4>
+                          <h4 className="font-bold text-gray-900 text-lg">
+                            {review.author}
+                          </h4>
                           {review.verified && (
                             <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">
                               ✓ Verified User
@@ -416,10 +376,14 @@ const ProductDetailsBottom = ({ data }) => {
                     </div>
 
                     {/* Review Title */}
-                    <h5 className="font-bold text-gray-900 text-lg mb-3">{review.title}</h5>
+                    <h5 className="font-bold text-gray-900 text-lg mb-3">
+                      {review.title}
+                    </h5>
 
                     {/* Review Content */}
-                    <p className="text-gray-700 leading-relaxed mb-5 text-base">{review.content}</p>
+                    <p className="text-gray-700 leading-relaxed mb-5 text-base">
+                      {review.content}
+                    </p>
 
                     {/* Helpful Button */}
                     <button className="flex items-center gap-2 text-gray-600 hover:text-cyan-600 font-bold transition-colors group">

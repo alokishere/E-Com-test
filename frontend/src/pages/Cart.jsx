@@ -25,7 +25,7 @@ const Cart = () => {
   }, []);
 
   // ✅ FIXED FETCH CART
- const fetchCart = async () => {
+  const fetchCart = async () => {
     try {
       const userId = user._id || user.id;
 
@@ -44,9 +44,12 @@ const Cart = () => {
           return {
             id: item._id,
             productId: product._id,
-            title: product.title,
-            price: product.price,
-            image: product.image,
+            title: product.name,
+            price: product.selling_price,
+            image:
+              product.images && product.images.length > 0
+                ? product.images[0]
+                : "",
             quantity: item.quantity,
           };
         }),
@@ -74,18 +77,17 @@ const Cart = () => {
     }
   };
 
-const removeItem = async (cartItemId) => {
-  try {
-    await instance.delete("/api/cart/remove", {
-      data: { cartItemId }, // 👈 IMPORTANT
-    });
+  const removeItem = async (cartItemId) => {
+    try {
+      await instance.delete("/api/cart/remove", {
+        data: { cartItemId }, // 👈 IMPORTANT
+      });
 
-    fetchCart();
-  } catch (err) {
-    console.error("Error removing item:", err);
-  }
-};
-
+      fetchCart();
+    } catch (err) {
+      console.error("Error removing item:", err);
+    }
+  };
 
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -124,7 +126,7 @@ const removeItem = async (cartItemId) => {
             <div className="lg:col-span-2 space-y-6">
               {cartItems.map((item) => (
                 <div
-                  key={item._id}
+                  key={item.id}
                   className="flex flex-col sm:flex-row items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-50 transition-all hover:shadow-md"
                 >
                   <div className="w-32 h-32 shrink-0 bg-gray-50 rounded-xl overflow-hidden mb-4 sm:mb-0 mr-0 sm:mr-6">
@@ -139,7 +141,7 @@ const removeItem = async (cartItemId) => {
                       {item.title}
                     </h3>
                     <p className="text-indigo-600 font-bold mb-4">
-                      ${item.price}
+                      ₹{item.price}
                     </p>
 
                     <div className="flex items-center justify-center sm:justify-start gap-4">
@@ -174,7 +176,7 @@ const removeItem = async (cartItemId) => {
                   </div>
                   <div className="mt-4 sm:mt-0 sm:ml-6 text-right">
                     <p className="text-xl font-black text-gray-900">
-                      ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                      ₹{(parseFloat(item.price) * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -191,7 +193,7 @@ const removeItem = async (cartItemId) => {
                 <div className="space-y-4 mb-8">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span>${totalPrice.toFixed(2)}</span>
+                    <span>₹{totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Shipping</span>
@@ -202,7 +204,7 @@ const removeItem = async (cartItemId) => {
                       Total
                     </span>
                     <span className="text-2xl font-black text-indigo-600">
-                      ${totalPrice.toFixed(2)}
+                      ₹{totalPrice.toFixed(2)}
                     </span>
                   </div>
                 </div>

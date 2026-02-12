@@ -21,10 +21,11 @@ const Navbar = () => {
   const { cartCount, setCartCount } = useCart();
   // console.log(user);
   React.useEffect(() => {
-    if (user) {
+    const userId = user?.id || user?._id;
+    if (userId) {
       instance
         .post(`/api/cart/get`, {
-          userId: user.id,
+          userId,
         })
         .then((response) => {
           setCartCount(response.data.cart.items.length);
@@ -33,16 +34,13 @@ const Navbar = () => {
           console.error("Error fetching cart count:", err);
         });
     }
-  }, [user?.id]);
+  }, [user?.id, user?._id]);
 
-
-
-  
-//HOME
+  //HOME
 
   const navItems = [
     { name: "HOME", hasDropdown: false, path: "/" },
-    { name: "MEN'S HEALTH", hasDropdown: false , path: "/products"},
+    { name: "MEN'S HEALTH", hasDropdown: false, path: "/products" },
     { name: "DAILY WELLNESS", hasDropdown: false },
     { name: "WEIGHT MANAGEMENT", hasDropdown: false },
     { name: "HAIR CARE", hasDropdown: false },
@@ -70,11 +68,19 @@ const Navbar = () => {
       <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
         <div className="flex items-center justify-between">
           {/* Left: House of Baidyanath (Placeholder/Text) */}
-          <a href="/" className="hidden md:flex flex-col text-[10px] items-start font-bold text-gray-800 leading-tight">
-            <p className="text-center w-full text-sm uppercase font-medium">from the house of</p>
+          <a
+            href="/"
+            className="hidden md:flex flex-col text-[10px] items-start font-bold text-gray-800 leading-tight"
+          >
+            <p className="text-center w-full text-sm uppercase font-medium">
+              from the house of
+            </p>
             <span className="h-15 w-auto ">
-           
-              <img className="h-full w-full " src="https://lebrostone1.lifeinfotechinstitute.com/public/assets/front-end/img/logo/Lebroid-logo.png" alt="" />
+              <img
+                className="h-full w-full "
+                src="/leftlogo.png"
+                alt=""
+              />
             </span>
           </a>
 
@@ -89,8 +95,11 @@ const Navbar = () => {
           {/* Center: Brand Logo */}
           <div className="flex-1 flex justify-center mb-4">
             <a href="/" className="h-15 w-auto">
-              
-            <img className="h-full w-auto object-contain" src="/logo.png" alt="" />
+              <img
+                className="h-full w-auto object-contain"
+                src="/logo.png"
+                alt=""
+              />
             </a>
           </div>
 
@@ -125,9 +134,7 @@ const Navbar = () => {
             {/* Circular Badge (Desktop Only) */}
             <div className="md:block w-12 h-12 border border-gray-800 rounded-full flex items-center flex-wrap justify-center opacity-80">
               <div className="mt-4 text-[5px] text-center leading-none font-bold text-gray-800 uppercase">
-                Research
-                Foundation
-                Since 1917
+                Research Foundation Since 1917
               </div>
             </div>
           </div>

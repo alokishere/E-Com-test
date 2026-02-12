@@ -10,13 +10,16 @@ const ProductCard = ({ data }) => {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
 
-  // Dummy rating data (replace with actual data from API if available)
-  const rating = 4.9;
-  const reviewCount = 185;
-  const discount = 30;
-  const originalPrice = Math.round(data.price / (1 - discount / 100));
+  // Actual data from API
+  const rating = data.rating || 0;
+  const reviewCount = data.reviews_count || 0;
+  const discount = data.discountAmount || 0;
+  const sellingPrice = data.unitPrice || 0;
+  const mrp =
+    data.mrp || (discount > 0 ? sellingPrice + discount : sellingPrice);
+  const serverBaseUrl = "https://lebrostonebackend.lifeinfotechinstitute.com";
 
-    const user = (() => {
+  const user = (() => {
     try {
       return JSON.parse(localStorage.getItem("user"));
     } catch {
@@ -24,10 +27,7 @@ const ProductCard = ({ data }) => {
     }
   })();
 
- const addToCartHandler = async (data) => {
-  data = data || data._id; 
-  // Ensure we have the product ID
-  
+  const addToCartHandler = async (productId) => {
     if (!user) {
       toast.error("Please log in to add products to your cart");
       navigate("/login");
@@ -35,8 +35,8 @@ const ProductCard = ({ data }) => {
     }
     try {
       await instance.post("/api/cart/add", {
-        userId: user?.id,
-        productId: data,
+        userId: user?.id || user?._id,
+        productId: productId,
       });
       setCartCount((prev) => prev + 1);
       toast.success("Product added to cart");
@@ -64,17 +64,19 @@ const ProductCard = ({ data }) => {
 
         {/* Product Image */}
         <img
-          src={data.image}
-          alt={data.title}
+          src={`https://lebrostonebackend.lifeinfotechinstitute.com${data?.thumbnail}`}
+          alt={data.name}
           className="w-full h-full object-contain p-6 sm:p-8 transition-transform duration-500 group-hover:scale-115"
         />
 
         {/* Category Badge */}
-        <div className="absolute top-4 left-4">
-          <span className="inline-flex items-center px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-cyan-700 bg-cyan-100 rounded-full border border-cyan-200 shadow-sm">
-            {data.category}
-          </span>
-        </div>
+        {data.category && (
+          <div className="absolute top-4 left-4">
+            <span className="inline-flex items-center px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-cyan-700 bg-cyan-100 rounded-full border border-cyan-200 shadow-sm">
+              {data.category.name || "Product"}
+            </span>
+          </div>
+        )}
 
         {/* Discount Badge */}
         {discount > 0 && (
@@ -101,13 +103,17 @@ const ProductCard = ({ data }) => {
       <div className="flex flex-col h-auto p-5 sm:p-6">
         {/* Title */}
         <h3 className="text-sm sm:text-base font-bold text-gray-900 line-clamp-2 mb-2 leading-tight">
-          {data.title}
+          {data.name}
         </h3>
 
         {/* Description */}
-        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 mb-4 grow">
-          {data.description}
-        </p>
+        <div
+          className="text-xs sm:text-sm text-gray-600 line-clamp-2 mb-4 grow"
+          dangerouslySetInnerHTML={{
+            __html:
+              data.tagline || data.short_description || data.description || "",
+          }}
+        />
 
         {/* Rating */}
         <div className="flex items-center gap-2 mb-4">
@@ -122,12 +128,12 @@ const ProductCard = ({ data }) => {
         <div className="mb-4 pb-4 border-t border-gray-200">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-2xl sm:text-3xl font-black text-gray-900">
-              ₹{data.price}
+              ₹{sellingPrice}
             </span>
-            {originalPrice > data.price && (
+            {mrp > sellingPrice && (
               <>
                 <span className="text-sm sm:text-base text-gray-400 line-through">
-                  ₹{originalPrice}
+                  ₹{mrp}
                 </span>
                 <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">
                   {discount}% off
@@ -135,15 +141,19 @@ const ProductCard = ({ data }) => {
               </>
             )}
           </div>
-          <p className="text-xs text-gray-500">
-            Inclusive of all taxes
-          </p>
+          <p className="text-xs text-gray-500">Inclusive of all taxes</p>
         </div>
 
         {/* Stock Status */}
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-2 h-2 rounded-full bg-green-500"></div>
-          <span className="text-xs font-semibold text-green-700">In Stock</span>
+          <div
+            className={`w-2 h-2 rounded-full ${data.currentStockQty > 0 ? "bg-green-500" : "bg-red-500"}`}
+          ></div>
+          <span
+            className={`text-xs font-semibold ${data.currentStockQty > 0 ? "text-green-700" : "text-red-700"}`}
+          >
+            {data.currentStockQty > 0 ? "In Stock" : "Out of Stock"}
+          </span>
         </div>
 
         {/* Action Buttons */}
@@ -153,10 +163,9 @@ const ProductCard = ({ data }) => {
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-linear-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl hover:shadow-lg transition-all active:scale-95 text-sm"
           >
             <span>Details</span>
-          
           </button>
-           <button
-            onClick={()=>addToCartHandler(data._id)}
+          <button
+            onClick={() => addToCartHandler(data._id)}
             className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-all active:scale-95"
           >
             <ShoppingCart className="w-5 h-5 mr-2" />

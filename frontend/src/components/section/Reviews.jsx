@@ -48,7 +48,7 @@ const Reviews = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header (Leaf Style) */}
         <div className="flex justify-center mb-16">
-          <div className="bg-[#1D4D6F] text-[#FFFF] py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
+          <div className=" text-black py-3 px-12 md:px-24 ">
             <h2 className="text-lg md:text-2xl font-bold uppercase tracking-widest text-center">
               REVIEWS
             </h2>

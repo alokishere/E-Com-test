@@ -114,8 +114,8 @@ const Profile = () => {
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Personal Details</h2>
         <div style={styles.infoRow}>
-          <span style={styles.label}>Username</span>
-          <span style={styles.value}>{user.username}</span>
+          <span style={styles.label}>Full Name</span>
+          <span style={styles.value}>{user.fullName}</span>
         </div>
         <div style={styles.infoRow}>
           <span style={styles.label}>Mobile Number</span>

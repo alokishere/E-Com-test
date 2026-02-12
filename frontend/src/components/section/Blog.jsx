@@ -25,8 +25,8 @@ const Blog = () => {
   return (
     <section className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="px-20 mb-12 rounded-tl-[35px] w-fit mx-auto py-2 rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg bg-[#1D4D6F]">
-          <p className="text-3xl w-fit font-bold text-[#FFFF] tracking-tight uppercase ">
+        <div className="px-20 mb-12 rounded-tl-[35px] w-fit mx-auto py-2 ">
+          <p className="text-3xl w-fit font-bold text-[#232222] tracking-tight uppercase ">
             Blog    
           </p>
           
@@ -53,7 +53,7 @@ const Blog = () => {
             </article>
           ))}
         </div>
-        <button className="mt-10 mx-auto block bg-transparent border border-[#1D4D6F] text-[#1D4D6F] px-6 py-3 rounded-lg font-bold hover:bg-[#0f2c42] hover:text-white transition-colors">
+        <button className="mt-10 mx-auto block bg-transparent border border-[#1D4D6F] text-[#1D4D6F] px-6 py-3 rounded-lg font-bold hover:bg-[#000000] hover:text-white transition-colors">
           View All
         </button>
       </div>

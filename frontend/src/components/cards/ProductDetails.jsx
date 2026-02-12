@@ -11,11 +11,12 @@ const ProductDetails = () => {
   const { setCartCount } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("200ml");
- const { _id } = useParams();
+  const { _id } = useParams();
   const navigate = useNavigate();
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mainImage, setMainImage] = useState("");
 
   // 🔹 safe user parse
   const user = (() => {
@@ -30,11 +31,16 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await instance.get(
-          `/api/product/getproductbyid/${_id}`
-        );
-        setData(res.data.product);
-        // console.log(res.data.product);
+        const res = await instance.get(`/api/products/${_id}`);
+        const productData = res.data.data;
+        setData(productData);
+        const serverBaseUrl =
+          "https://lebrostonebackend.lifeinfotechinstitute.com";
+        if (productData?.images?.length > 0) {
+          setMainImage(`${serverBaseUrl}${productData.images[0]}`);
+        } else if (productData?.thumbnail) {
+          setMainImage(`${serverBaseUrl}${productData.thumbnail}`);
+        }
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -54,15 +60,13 @@ const ProductDetails = () => {
         userId: user.id,
         productId: data._id,
       });
-setCartCount((prev) => prev + 1);
+      setCartCount((prev) => prev + 1);
       toast.success("Product added to cart");
     } catch (err) {
       console.error(err);
       toast.error("Failed to add product to cart");
     }
   };
-
-
 
   if (loading) {
     return (
@@ -76,20 +80,47 @@ setCartCount((prev) => prev + 1);
       </div>
     );
   }
- if (!data) return <p>Product not found</p>;
+  if (!data) return <p>Product not found</p>;
 
-  const discount = 30;
-  const originalPrice = 549;
+  const discount = data.discountAmount || 0;
+  const sellingPrice = data.unitPrice || 0;
+  const originalPrice =
+    data.mrp || (discount > 0 ? sellingPrice + discount : sellingPrice);
+  const serverBaseUrl = "https://lebrostonebackend.lifeinfotechinstitute.com";
 
-  const sizeOptions = [
-    { label: "100 ml", price: 269, mrp: 399, discount: 32, perml: 269 },
-    { label: "150 ml", price: 314, mrp: 449, discount: 30, perml: 209 },
-    { label: "200 ml", price: 384, mrp: 549, discount: 30, perml: 192 },
-  ];
+  // Use variants from data if available, or fall back to a default based on net_content
+  const sizeOptions =
+    data.variants && data.variants.length > 0
+      ? data.variants.map((v) => ({
+          label: v.size,
+          price: v.selling_price,
+          mrp: v.mrp,
+          discount: v.discount,
+          perml: Math.round(v.selling_price / (parseInt(v.size) || 1)),
+        }))
+      : [
+          {
+            label: data.net_content || "Standard",
+            price: sellingPrice,
+            mrp: originalPrice,
+            discount: discount,
+            perml: Math.round(sellingPrice / (parseInt(data.net_content) || 1)),
+          },
+        ];
 
   const packOptions = [
-    { label: "100 ml (Pack of 2)", price: 404, mrp: 538, discount: 25, perml: 202 },
-    { label: "150 ml (Pack of 2)", price: 503, mrp: 838, discount: 40, perml: 168, timer: "12h : 37m : 42s" },
+    // You could generate these dynamically or keep a few presets
+    {
+      label: `${data.net_content || "Standard"} (Pack of 2)`,
+      price: Math.round(sellingPrice * 1.8),
+      mrp: originalPrice * 2,
+      discount: Math.round(
+        ((originalPrice * 2 - sellingPrice * 1.8) / (originalPrice * 2)) * 100,
+      ),
+      perml: Math.round(
+        (sellingPrice * 1.8) / (parseInt(data.net_content) * 2 || 2),
+      ),
+    },
   ];
 
   return (
@@ -102,10 +133,10 @@ setCartCount((prev) => prev + 1);
           </a>
           <ChevronRight className="w-4 h-4 text-gray-400" />
           <a href="/products" className="text-cyan-500 hover:text-cyan-600">
-            Face-Wash
+            {data.category?.name || "Products"}
           </a>
           <ChevronRight className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-700">{data.title} – 200 ml</span>
+          <span className="text-gray-700">{data.name}</span>
         </div>
       </div>
 
@@ -115,19 +146,20 @@ setCartCount((prev) => prev + 1);
           <div className="lg:col-span-1">
             <div className="bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center aspect-square mb-4 border border-gray-300">
               <img
-                src={data.image}
-                alt={data.title}
+                src={mainImage}
+                alt={data.name}
                 className="w-full h-full object-contain p-8"
               />
             </div>
-            <div className="flex gap-2 overflow-x-auto">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {data.images?.map((img, i) => (
                 <div
                   key={i}
-                  className="w-16 h-16 bg-gray-100 rounded border border-gray-300 shrink-0 cursor-pointer hover:border-cyan-500"
+                  onClick={() => setMainImage(`${serverBaseUrl}${img}`)}
+                  className={`w-16 h-16 bg-gray-100 rounded border shrink-0 cursor-pointer overflow-hidden ${mainImage === `${serverBaseUrl}${img}` ? "border-cyan-500 border-2" : "border-gray-300 hover:border-cyan-500"}`}
                 >
                   <img
-                    src={data.image}
+                    src={`${serverBaseUrl}${img}`}
                     alt={`View ${i}`}
                     className="w-full h-full object-contain p-2"
                   />
@@ -138,97 +170,142 @@ setCartCount((prev) => prev + 1);
 
           {/* Middle Column - Details */}
           <div className="lg:col-span-1">
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">{data.title}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-3">
+              {data.name}
+            </h1>
 
             {/* Subtitle */}
             <p className="text-gray-700 text-sm font-medium mb-4">
-              Removes Tan | Brightens Skin
+              {data.tagline}
             </p>
 
             {/* Rating */}
             <div className="flex items-center gap-2 mb-6">
               <div className="flex items-center gap-1">
                 <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                <span className="font-bold text-gray-900">4.9</span>
+                <span className="font-bold text-gray-900">
+                  {data.rating || 0}
+                </span>
               </div>
               <a href="#" className="text-cyan-500 text-sm font-medium">
-                185 Reviews
+                {data.reviews_count || 0} Reviews
               </a>
             </div>
 
             {/* Net Content */}
             <div className="mb-6 pb-6 border-b border-gray-300">
               <p className="text-gray-700">
-                Net content: <span className="font-bold">200ml</span> (USP: <span className="font-bold">₹1.92/ml</span>)
+                Net content: <span className="font-bold">{data.unit}</span>
               </p>
             </div>
 
             {/* Pricing */}
             <div className="mb-6">
               <div className="flex items-baseline gap-3 mb-2">
-                <span className="text-4xl font-bold text-gray-900">₹{data.price}</span>
-                <span className="text-2xl text-red-600 font-bold">{discount}% off</span>
+                <span className="text-4xl font-bold text-gray-900">
+                  ₹{sellingPrice}
+                </span>
+                {discount > 0 && (
+                  <span className="text-2xl text-red-600 font-bold">
+                    {discount}% off
+                  </span>
+                )}
               </div>
               <p className="text-gray-600 text-sm">
-                M.R.P. <span className="line-through">₹{originalPrice}</span> Inclusive of all taxes
+                M.R.P. <span className="line-through">₹{originalPrice}</span>{" "}
+                Inclusive of all taxes
               </p>
             </div>
 
             {/* Size Selection */}
-            <div className="mb-8">
-              <h3 className="font-bold text-gray-900 mb-4">Select Size</h3>
-              <div className="grid grid-cols-3 gap-3">
-                {sizeOptions.map((size, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedSize(size.label)}
-                    className={`p-3 rounded-lg border-2 text-left transition-all ${
-                      selectedSize === size.label
-                        ? "border-cyan-500 bg-cyan-50"
-                        : "border-gray-300 bg-white hover:border-gray-400"
-                    }`}
-                  >
-                    <div className="font-bold text-gray-900 text-sm">{size.label}</div>
-                    <div className="text-gray-900 font-bold text-sm mt-1">₹{size.price}</div>
-                    <div className="flex gap-1 text-xs mt-1">
-                      <span className="line-through text-gray-500">₹{size.mrp}</span>
-                      <span className="text-green-600 font-bold">{size.discount}% off</span>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">(₹{size.perml}/ml)</div>
-                    <div className="text-green-600 text-xs font-bold mt-2">In stock</div>
-                  </button>
-                ))}
+            {sizeOptions.length > 0 && (
+              <div className="mb-8">
+                <h3 className="font-bold text-gray-900 mb-4">Select Size</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {sizeOptions.map((size, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedSize(size.label)}
+                      className={`p-3 rounded-lg border-2 text-left transition-all ${
+                        selectedSize === size.label
+                          ? "border-cyan-500 bg-cyan-50"
+                          : "border-gray-300 bg-white hover:border-gray-400"
+                      }`}
+                    >
+                      <div className="font-bold text-gray-900 text-sm">
+                        {size.label}
+                      </div>
+                      <div className="text-gray-900 font-bold text-sm mt-1">
+                        ₹{size.price}
+                      </div>
+                      <div className="flex gap-1 text-xs mt-1">
+                        {size.mrp > size.price && (
+                          <span className="line-through text-gray-500">
+                            ₹{size.mrp}
+                          </span>
+                        )}
+                        <span className="text-green-600 font-bold">
+                          {size.discount}% off
+                        </span>
+                      </div>
+                      <div className="text-green-600 text-xs font-bold mt-2">
+                        In stock
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
+            )}
+
+            {/* Description Section */}
+            <div className="mb-8 pb-8 border-b border-gray-300">
+              <h3 className="font-bold text-gray-900 mb-2">Description</h3>
+              <div
+                className="text-gray-600 text-sm leading-relaxed product-description"
+                dangerouslySetInnerHTML={{ __html: data.description }}
+              />
             </div>
 
-            {/* Pack Options */}
-            <div className="mb-8">
-              <h3 className="font-bold text-gray-900 mb-4">Pack Options</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {packOptions.map((pack, idx) => (
-                  <button
-                    key={idx}
-                    className="p-3 rounded-lg border-2 border-gray-300 bg-white text-left hover:border-gray-400 transition-all"
-                  >
-                    <div className="font-bold text-gray-900 text-sm">{pack.label}</div>
-                    <div className="text-gray-900 font-bold text-sm mt-1">₹{pack.price}</div>
-                    <div className="flex gap-1 text-xs mt-1">
-                      <span className="line-through text-gray-500">₹{pack.mrp}</span>
-                      <span className="text-green-600 font-bold">{pack.discount}% off</span>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">(₹{pack.perml}/ml)</div>
-                    {pack.timer && (
-                      <div className="text-purple-600 text-xs font-semibold mt-2">
-                        Sale: {pack.timer}
+            {/* Features */}
+            {data.features && data.features.length > 0 && (
+              <div className="mb-8">
+                <h3 className="font-bold text-gray-900 mb-4">Key Features</h3>
+                <div className="space-y-3">
+                  {data.features.map((feature, idx) => (
+                    <div key={idx} className="flex gap-3">
+                      <div className="w-5 h-5 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center shrink-0">
+                        ✓
                       </div>
-                    )}
-                    {!pack.timer && (
-                      <div className="text-green-600 text-xs font-bold mt-2">In stock</div>
-                    )}
-                  </button>
-                ))}
+                      <div>
+                        <p className="text-sm font-bold text-gray-900">
+                          {feature.title}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* FAQs */}
+            {data.faqs && data.faqs.length > 0 && (
+              <div className="mb-8">
+                <h3 className="font-bold text-gray-900 mb-4">FAQs</h3>
+                <div className="space-y-4">
+                  {data.faqs.map((faq, idx) => (
+                    <div key={idx} className="border-b border-gray-100 pb-3">
+                      <p className="text-sm font-bold text-gray-900 mb-1">
+                        Q: {faq.question}
+                      </p>
+                      <p className="text-sm text-gray-600">A: {faq.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Trust Badges */}
             <div className="grid grid-cols-4 gap-4 py-6 border-t border-gray-300">
@@ -242,12 +319,12 @@ setCartCount((prev) => prev + 1);
                   <div className="w-10 h-10 rounded-full border-2 border-green-500 flex items-center justify-center mx-auto mb-2">
                     <span className="text-sm text-green-600">{badge.icon}</span>
                   </div>
-                  <p className="text-xs text-gray-600 font-medium">{badge.label}</p>
+                  <p className="text-xs text-gray-600 font-medium">
+                    {badge.label}
+                  </p>
                 </div>
               ))}
-            
             </div>
-         
           </div>
 
           {/* Right Column - Offers Sidebar */}
@@ -257,40 +334,53 @@ setCartCount((prev) => prev + 1);
                 <span className="text-lg">⭐</span> Available Offers
               </h3>
 
-              {/* Offer Pills */}
-              <div className="flex gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              </div>
-
               {/* Main Offer */}
               <div className="mb-4 pb-4 border-b border-gray-300">
-                <p className="text-sm font-bold text-gray-900">Buy 3 Pay For 2</p>
-                <p className="text-xs text-gray-600 mt-1">Use code B3P2</p>
+                <p className="text-sm font-bold text-gray-900">
+                  Limited Time Offer
+                </p>
+                <p className="text-xs text-gray-600 mt-1">
+                  Get special discounts on your first order!
+                </p>
               </div>
 
               {/* Current Price Card */}
               <div className="bg-green-50 rounded-lg p-4 border border-green-200">
                 <div className="flex justify-between items-baseline mb-2">
-                  <span className="font-bold text-gray-900">₹{data.price}</span>
-                  <span className="text-red-600 font-bold text-lg">{discount}% off</span>
+                  <span className="font-bold text-gray-900 text-xl">
+                    ₹{sellingPrice}
+                  </span>
+                  {discount > 0 && (
+                    <span className="text-red-600 font-bold text-lg">
+                      {discount}% off
+                    </span>
+                  )}
                 </div>
-                <p className="text-xs text-gray-600 mb-3">Inclusive of all Taxes</p>
+                <p className="text-xs text-gray-600 mb-3">
+                  Inclusive of all Taxes
+                </p>
 
                 <div className="flex items-center gap-2 mb-3">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-xs font-bold text-gray-900">4.9</span>
+                  <span className="text-xs font-bold text-gray-900">
+                    {data.rating || 0}
+                  </span>
                   <span className="text-xs text-gray-600">
-                    • <span className="text-cyan-500">185 Reviews</span>
+                    •{" "}
+                    <span className="text-cyan-500">
+                      {data.reviews_count || 0} Reviews
+                    </span>
                   </span>
                 </div>
 
-                <p className="text-xs text-gray-700 font-medium">200 ml</p>
+                <p className="text-xs text-gray-700 font-medium">{data.unit}</p>
               </div>
 
               {/* Quantity Selector */}
               <div className="mt-6 mb-6">
-                <p className="text-sm font-medium text-gray-700 mb-3">Quantity :</p>
+                <p className="text-sm font-medium text-gray-700 mb-3">
+                  Quantity :
+                </p>
                 <div className="flex items-center justify-start gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -298,7 +388,9 @@ setCartCount((prev) => prev + 1);
                   >
                     −
                   </button>
-                  <span className="text-lg font-bold text-gray-900 w-6 text-center">{quantity}</span>
+                  <span className="text-lg font-bold text-gray-900 w-6 text-center">
+                    {quantity}
+                  </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded border border-gray-300 text-gray-700 font-bold"
@@ -320,8 +412,8 @@ setCartCount((prev) => prev + 1);
           </div>
         </div>
       </div>
-     <ProductDetailsBottom/>
-    <Footer/>
+      <ProductDetailsBottom data={data} />
+      <Footer />
     </div>
   );
 };

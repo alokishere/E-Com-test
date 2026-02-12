@@ -9,7 +9,7 @@ const TopPicks = () => {
   const [activeTab, setActiveTab] = useState("BESTSELLERS");
   const swiperRef = useRef(null);
 
-  const categories = ["BESTSELLERS", "NEW ARRIVAL"];
+  const categories = ["BESTSELLERS", "NEW ARRIVAL","COMBO"];
 
   const allProducts = [
     {
@@ -106,7 +106,7 @@ const TopPicks = () => {
     <section className="py-20 px-2 max-w-7xl mx-auto pl-8 relative bg-white">
       {/* Header */}
       <div className="flex justify-center mb-16">
-        <div className="bg-[#1D4D6F] text-white py-3 px-12 md:px-24 rounded-tl-[35px] rounded-br-[35px] border-[3px] border-[#A7F3D0] shadow-lg">
+        <div className=" text-black py-3 px-12 md:px-24 Zshadow-lg">
           <h2 className="text-lg md:text-2xl font-bold uppercase tracking-widest text-center">
             Top Picks This Season
           </h2>

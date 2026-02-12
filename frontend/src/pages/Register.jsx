@@ -16,7 +16,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+console.log({fullName:fullName, mobile:mobile, password:password});
     if (!fullName.trim() || !mobile.trim() || !password.trim()) {
       toast.error("All fields are required!");
       return;
